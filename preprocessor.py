@@ -58,23 +58,45 @@ def preprocess_log(input_path, output_path, dt):
     df['vel_posicao'] = 0.0
     df['vel_rotacao'] = 0.0
 
-    for pid in df['player_id'].unique():
+    #
+    for pid in df['player_id'].unique(): # para cada unico player no dataframe
+        # assim a velocidade calculada comparando a posição atual do jogadorA com a posição anterior do próprio jogadorA.
         mask = df['player_id'] == pid
         player_df = df[mask].copy()
 
         # Velocidade de Movimento
+        # Teorema de pitágoras para medir a distancia entre dois tiques do jogo
         dist = np.sqrt(player_df['pos_x'].diff()**2 + player_df['pos_z'].diff()**2)
+        vel_lin = (dist / dt).fillna(0.0)
+        # diff calcula a variação exemplo > X atual - X anterior
+        # np.sqrt calcula a hipotenusa  raiz quadrada de x^2 - z^2
+        #aceleração linear
+        acel_lin = (vel_lin.diff() / dt).fillna(0.0)
+
+
         df.loc[mask, 'vel_posicao'] = (dist / dt).fillna(0.0)
+        # loc trava na celula do df em que a linha é o mask, jogador
+        # vel_posicao é a coluna que escreve o resultado
+        # mask garante que estamos alterando apenas linhas referentes aquele jogador específico
+        # divide distancia por tempo pra saber velocidade
 
         # Velocidade de Rotação (Aimbot)
         angulos = np.arctan2(player_df['dir_x'], player_df['dir_z'])
-        diff_ang = angulos.diff()
+        # np.arctan2 transforma os vetores em angulos
+        diff_ang = angulos.diff() # subtrai o angulo atual do anterior
         # Ajuste de rotação circular
         diff_ang = np.abs(np.arctan2(np.sin(diff_ang), np.cos(diff_ang)))
+        # divide angulo pelo tempo pra saber velocidade angular
         df.loc[mask, 'vel_rotacao'] = (diff_ang / dt).fillna(0.0)
 
+        # JITTER variação de velocidade angular
+        jitter = vel_ang.diff().abs().fillna(0.0)
+        # inserindo de volta no data frame principal
+        df.loc[mask, 'vel_linear'] = vel_lin
+        df.loc[mask, 'acel_linear'] = acel_lin
+
+
     # SALVAMENTO
-    # Para a IA, vamos salvar as colunas que importam para o comportamento
     cols_ia = ['pos_x', 'pos_z', 'pos_y', 'vel_posicao', 'vel_rotacao', 'mirando']
     df[cols_ia].to_csv(output_path, index=False)
     print(f"Dataset salvo em: {output_path}")
