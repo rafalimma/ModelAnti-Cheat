@@ -1,0 +1,41 @@
+DISTANCIA PERCORRIDA PELO JOGADOR
+calcula distnacia euclidiana percorrida pelo jogador no mapa
+plyer_df['pos_x'].diff() -> o método diff subtrai a posição atual da posição anterior
+nos dando o eixo x
+
+**2 eleva-se ao quadrado para garantir que o valor seja
+positivo e para seguir a formula do Teorema
+np.sqrt(...) tirar a raiz quadrada da soma dos quadrados
+
+DIREÇÃO OLHADA PELO JOGADOR (SABER EM QUANTOS ANGULOS O JOGADOR VIROU A CABEÇA)
+O DayZ te dá a direção que o jogador olha como coordenadas em um círculo unitário
+(ex: 0.5, -0.8).
+Isso é difícil para a IA comparar.
+angulos = np.arctan2(player_df['dir_x'], player_df['dir_z'])
+O arctan2 pega esses dois valores e calcula o ângulo real em radianos.
+
+diff_ang = angulos.diff()
+subtrai o angulo atual do anterior
+Se no Tique 1 eu olhava para 10 e no Tique 2 olho para 15 o diff_ang é 5.
+Isso nos diz o quanto o jogador girou a cabeça naquele intervalo de
+
+NORMALIZAR A VIRADA DE 359 GRAUS PARA 1 GRAU
+diff_ang = np.abs(np.arctan2(np.sin(diff_ang), np.cos(diff_ang)))
+Esta linha de código: Ela "normaliza" a diferença. Ela percebe que girar de
+$359 para $1 é, na verdade, um movimento de apenas $2^\circ$.
+O np.abs garante que não existam ângulos negativos;
+só queremos saber o "tamanho" do movimento,
+não importa se foi para a esquerda ou direita
+
+OBTENDO A VELOCIDADE ANGULAR
+dividimos angulo pelo tempo, gerando velocidade angular, tempo que o jogador virou
+a cabeça de um lugar para o outro
+
+Por que isso pega o Hacker? Um humano movendo o mouse tem uma velocidade física limitada e variável. 
+Um Aimbot altera o ângulo do Tique 1 para o Tique 2 de forma instantânea e matematicamente perfeita para cravar no alvo. 
+A vel_rotacao do hacker terá "picos" que um humano jamais conseguiria replicar.
+
+JITTER
+Variação na velocidade angular
+Humanos têm velocidade inconstante, bots são constantes (Jitter baixo)
+

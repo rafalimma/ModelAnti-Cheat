@@ -52,9 +52,11 @@ def preprocess_log(input_path, output_path, dt):
         return
 
     df = pd.DataFrame(data)
+
     print(f"Sucesso! {len(df)} linhas processadas.")
 
     # --- CÁLCULOS COMPORTAMENTAIS ---
+    new_features = []
     df['vel_posicao'] = 0.0
     df['vel_rotacao'] = 0.0
 
@@ -71,6 +73,8 @@ def preprocess_log(input_path, output_path, dt):
         # diff calcula a variação exemplo > X atual - X anterior
         # np.sqrt calcula a hipotenusa  raiz quadrada de x^2 - z^2
         #aceleração linear
+
+        # detecta o speedhack brusco
         acel_lin = (vel_lin.diff() / dt).fillna(0.0)
 
 
@@ -84,8 +88,10 @@ def preprocess_log(input_path, output_path, dt):
         angulos = np.arctan2(player_df['dir_x'], player_df['dir_z'])
         # np.arctan2 transforma os vetores em angulos
         diff_ang = angulos.diff() # subtrai o angulo atual do anterior
+
         # Ajuste de rotação circular
         diff_ang = np.abs(np.arctan2(np.sin(diff_ang), np.cos(diff_ang)))
+        vel_ang = (diff_ang / dt).fillna(0.0)
         # divide angulo pelo tempo pra saber velocidade angular
         df.loc[mask, 'vel_rotacao'] = (diff_ang / dt).fillna(0.0)
 
@@ -94,11 +100,16 @@ def preprocess_log(input_path, output_path, dt):
         # inserindo de volta no data frame principal
         df.loc[mask, 'vel_linear'] = vel_lin
         df.loc[mask, 'acel_linear'] = acel_lin
+        df.loc[mask, 'vel_angular'] = vel_ang
+        df.loc[mask, 'jitter_mira'] = jitter
+        df.loc[mask, 'vel_rotacao'] = vel_rotacao
 
 
     # SALVAMENTO
     cols_ia = ['pos_x', 'pos_z', 'pos_y', 'vel_posicao', 'vel_rotacao', 'mirando']
-    df[cols_ia].to_csv(output_path, index=False)
+    # removendo possíveis erros matemáticos ou valores infinitos
+    df_final = df[cols_ia].replace([np.inf, -np.inf], np.nan).dropna()
+    df_final.to_csv(output_path, index=False)
     print(f"Dataset salvo em: {output_path}")
 
 preprocess_log(FILE_IN, FILE_OUT, INTERVALO_TEMPO)
