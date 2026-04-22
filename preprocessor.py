@@ -5,8 +5,8 @@ import os
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'D:\DayZServerProfiles\log_normal_2026-03-04_20-00-10.log' 
-FILE_OUT = 'datasets/dataset_processado.csv'
+FILE_IN = r'D:\DayZServerProfiles\script_2026-04-22_10-13-57.log' 
+FILE_OUT = 'datasets/dataset_cooked.csv'
 INTERVALO_TEMPO = 1.0 
 # ==========================================
 
@@ -56,9 +56,10 @@ def preprocess_log(input_path, output_path, dt):
     print(f"Sucesso! {len(df)} linhas processadas.")
 
     # --- CÁLCULOS COMPORTAMENTAIS ---
-    new_features = []
     df['vel_posicao'] = 0.0
     df['vel_rotacao'] = 0.0
+    df['acel_linear'] = 0.0
+    df['jitter_mira'] = 0.0
 
     #
     for pid in df['player_id'].unique(): # para cada unico player no dataframe
@@ -69,44 +70,40 @@ def preprocess_log(input_path, output_path, dt):
         # Velocidade de Movimento
         # Teorema de pitágoras para medir a distancia entre dois tiques do jogo
         dist = np.sqrt(player_df['pos_x'].diff()**2 + player_df['pos_z'].diff()**2)
-        vel_lin = (dist / dt).fillna(0.0)
+        vel_lin = (dist / dt).fillna(0.0) # velocidade linear distância / tempo
         # diff calcula a variação exemplo > X atual - X anterior
         # np.sqrt calcula a hipotenusa  raiz quadrada de x^2 - z^2
         #aceleração linear
-
-        # detecta o speedhack brusco
-        acel_lin = (vel_lin.diff() / dt).fillna(0.0)
-
-
-        df.loc[mask, 'vel_posicao'] = (dist / dt).fillna(0.0)
+        
         # loc trava na celula do df em que a linha é o mask, jogador
         # vel_posicao é a coluna que escreve o resultado
         # mask garante que estamos alterando apenas linhas referentes aquele jogador específico
         # divide distancia por tempo pra saber velocidade
-
+        # detecta o speedhack brusco
+        acel_lin = (vel_lin.diff() / dt).fillna(0.0)
+        
         # Velocidade de Rotação (Aimbot)
         angulos = np.arctan2(player_df['dir_x'], player_df['dir_z'])
         # np.arctan2 transforma os vetores em angulos
         diff_ang = angulos.diff() # subtrai o angulo atual do anterior
 
-        # Ajuste de rotação circular
+        # Ajuste de rotação circular (evita erro do 359° -> 1°)
         diff_ang = np.abs(np.arctan2(np.sin(diff_ang), np.cos(diff_ang)))
-        vel_ang = (diff_ang / dt).fillna(0.0)
-        # divide angulo pelo tempo pra saber velocidade angular
-        df.loc[mask, 'vel_rotacao'] = (diff_ang / dt).fillna(0.0)
+        vel_rot = (diff_ang / dt).fillna(0.0)
+        # divide angulo pelo tempo pra saber velocidade angular / rotação
+        df.loc[mask, 'vel_rotacao'] = vel_rot
 
-        # JITTER variação de velocidade angular
-        jitter = vel_ang.diff().abs().fillna(0.0)
+        # JITTER variação de velocidade angular (Variação da mira - Biometria Comportamental
+        jitter = vel_rot.diff().abs().fillna(0.0)
         # inserindo de volta no data frame principal
-        df.loc[mask, 'vel_linear'] = vel_lin
+        df.loc[mask, 'vel_posicao'] = vel_lin
         df.loc[mask, 'acel_linear'] = acel_lin
-        df.loc[mask, 'vel_angular'] = vel_ang
         df.loc[mask, 'jitter_mira'] = jitter
-        df.loc[mask, 'vel_rotacao'] = vel_rotacao
+        df.loc[mask, 'vel_rotacao'] = vel_rot
 
 
     # SALVAMENTO
-    cols_ia = ['pos_x', 'pos_z', 'pos_y', 'vel_posicao', 'vel_rotacao', 'mirando']
+    cols_ia = ['pos_x', 'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira', 'mirando']
     # removendo possíveis erros matemáticos ou valores infinitos
     df_final = df[cols_ia].replace([np.inf, -np.inf], np.nan).dropna()
     df_final.to_csv(output_path, index=False)
