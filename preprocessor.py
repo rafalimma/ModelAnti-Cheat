@@ -5,8 +5,8 @@ import os
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'D:\DayZServerProfiles\script_2026-04-22_10-13-57.log' 
-FILE_OUT = 'datasets/dataset_cooked.csv'
+FILE_IN = r'D:\DayZServerProfiles\script_2026-hacker1.txt'
+FILE_OUT = 'datasets/dataset_hacker.csv'
 INTERVALO_TEMPO = 1.0 
 # ==========================================
 
@@ -22,11 +22,11 @@ def preprocess_log(input_path, output_path, dt):
         for line in f:
             # Procuro se a linha contém DATA_LOG, não importa o que tem antes
             if "DATA_LOG" in line:
-                # 1. Removemos o prefixo "SCRIPT : " limpando tudo antes do DATA_LOG
+                # Removemos o prefixo "SCRIPT : " limpando tudo antes do DATA_LOG
                 content = line.split("DATA_LOG")[-1] 
                 
-                # 2. Agora dividimos pelo separador '|'
-                parts = [p.strip() for p in content.split('|') if p.strip()]
+                # Agora dividimos pelo separador '|'
+                parts = [p.strip() for p in content.split('|') if p.strip()]   
                 
                 try:
                     # Mapeamento baseado no seu log:
@@ -60,6 +60,8 @@ def preprocess_log(input_path, output_path, dt):
     df['vel_rotacao'] = 0.0
     df['acel_linear'] = 0.0
     df['jitter_mira'] = 0.0
+    df['entropia_mov'] = 0.0
+    df['eficiencia_trajeto'] = 0.0
 
     #
     for pid in df['player_id'].unique(): # para cada unico player no dataframe
@@ -91,19 +93,35 @@ def preprocess_log(input_path, output_path, dt):
         diff_ang = np.abs(np.arctan2(np.sin(diff_ang), np.cos(diff_ang)))
         vel_rot = (diff_ang / dt).fillna(0.0)
         # divide angulo pelo tempo pra saber velocidade angular / rotação
-        df.loc[mask, 'vel_rotacao'] = vel_rot
 
         # JITTER variação de velocidade angular (Variação da mira - Biometria Comportamental
+        #A Anomalia: Se a vel_posicao é alta e o jitter_mira é quase nulo por mais de 3 segundos, significa que o jogador está travado em um objetivo fixo (lock-on).
         jitter = vel_rot.diff().abs().fillna(0.0)
+
+        #calcular a entropia de movimento
+        # desvio padrão da direção, se o desvio padrão for próximo a zero enquanto a velocidade
+        # é alta, a entropia é baixa
+        entropia = vel_rot.rolling(window=5).std().fillna(0.0)
+        # eficiencia da trajetória (distancia reta x distancia percorrida)
+        janela =20
+        dist_acumulada = dist.rolling(window=janela).sum()
+        # Distância em linha reta entre o ponto atual e o de 10 tiques atrás
+        dx_10 = player_df['pos_x'] - player_df['pos_x'].shift(janela)
+        dz_10 = player_df['pos_z'] - player_df['pos_z'].shift(janela)
+        dist_reta_10 = np.sqrt(dx_10**2 + dz_10**2)
+        eficiencia = (dist_reta_10 / dist_acumulada).fillna(0.0)
+        df['entropia_mov'] = entropia
         # inserindo de volta no data frame principal
+        df.loc[mask, 'vel_rotacao'] = vel_rot
         df.loc[mask, 'vel_posicao'] = vel_lin
         df.loc[mask, 'acel_linear'] = acel_lin
         df.loc[mask, 'jitter_mira'] = jitter
         df.loc[mask, 'vel_rotacao'] = vel_rot
+        df.loc[mask, 'eficiencia_trajeto'] = eficiencia
 
 
     # SALVAMENTO
-    cols_ia = ['pos_x', 'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira', 'mirando']
+    cols_ia = ['pos_x', 'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira','entropia_mov', 'eficiencia_trajeto', 'mirando']
     # removendo possíveis erros matemáticos ou valores infinitos
     df_final = df[cols_ia].replace([np.inf, -np.inf], np.nan).dropna()
     df_final.to_csv(output_path, index=False)
