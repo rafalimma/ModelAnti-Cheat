@@ -94,22 +94,36 @@ def preprocess_log(input_path, output_path, dt):
         vel_rot = (diff_ang / dt).fillna(0.0)
         # divide angulo pelo tempo pra saber velocidade angular / rotação
 
+        # ------ JITTER --------
         # JITTER variação de velocidade angular (Variação da mira - Biometria Comportamental
         #A Anomalia: Se a vel_posicao é alta e o jitter_mira é quase nulo por mais de 3 segundos, significa que o jogador está travado em um objetivo fixo (lock-on).
         jitter = vel_rot.diff().abs().fillna(0.0)
 
+
+        # ------ ENTROPIA DE MOVIMENTO --------
         #calcular a entropia de movimento
         # desvio padrão da direção, se o desvio padrão for próximo a zero enquanto a velocidade
         # é alta, a entropia é baixa
+        '''
+        A detecção não se baseia na localização do item, mas na anomalia de intenção. 
+        Um jogador que mantém 99% de eficiência de trajeto (linha reta) por longos períodos, 
+        combinada com baixa entropia de rotação (olhar fixo), apresenta um padrão estatístico incompatível com a exploração humana natural, 
+        que é inerentemente caótica e ineficiente.
+        '''
         entropia = vel_rot.rolling(window=5).std().fillna(0.0)
+
+        # ------ EFICIÊNCIA DE TRAJETÓRIA --------
         # eficiencia da trajetória (distancia reta x distancia percorrida)
         janela =20
         dist_acumulada = dist.rolling(window=janela).sum()
         # Distância em linha reta entre o ponto atual e o de 10 tiques atrás
         dx_10 = player_df['pos_x'] - player_df['pos_x'].shift(janela)
         dz_10 = player_df['pos_z'] - player_df['pos_z'].shift(janela)
+
         dist_reta_10 = np.sqrt(dx_10**2 + dz_10**2)
         eficiencia = (dist_reta_10 / dist_acumulada).fillna(0.0)
+
+
         df['entropia_mov'] = entropia
         # inserindo de volta no data frame principal
         df.loc[mask, 'vel_rotacao'] = vel_rot
@@ -118,6 +132,19 @@ def preprocess_log(input_path, output_path, dt):
         df.loc[mask, 'jitter_mira'] = jitter
         df.loc[mask, 'vel_rotacao'] = vel_rot
         df.loc[mask, 'eficiencia_trajeto'] = eficiencia
+
+        '''
+        Para saber se o Jogador A está olhando fixamente para o Jogador B através de um obstáculo, 
+        usamos a Similaridade de Cosseno entre o vetor de visão do Jogador A e a direção real onde o Jogador B está.
+        '''
+        #O segredo aqui é que, após calcular as velocidades individuais de cada jogador, 
+        #fazemos um segundo loop para comparar os jogadores entre si no mesmo tique de tempo.
+
+    df['travado_em_player'] = 0.0
+    df['perseguindo_player'] = 0
+    for tempo_tique in df['tempo'].unique():
+        tique_df = df[df['tempo'] == tempo_tique]
+
 
 
     # SALVAMENTO
