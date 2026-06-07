@@ -5,8 +5,8 @@ import os
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'D:\DayZServerProfiles\script_2026-hacker1.txt'
-FILE_OUT = 'datasets/dataset_hacker.csv'
+FILE_IN = r'log_profiles/script_2026-06-07_15-26-02-hacker-entropia.txt'
+FILE_OUT = 'datasets/dataset_hacker_entropia.csv'
 INTERVALO_TEMPO = 1.0 
 # ==========================================
 
@@ -144,11 +144,71 @@ def preprocess_log(input_path, output_path, dt):
     df['perseguindo_player'] = 0
     for tempo_tique in df['tempo'].unique():
         tique_df = df[df['tempo'] == tempo_tique]
+        # se ouver menos de 2 jogadores no tique não ha o que comparar
+        if len(tique_df) < 2:
+            continue
+
+        for idx, player_atual in tique_df.iterrows():
+            pid_atual = player_atual['player_id']
+            px, pz = player_atual['pos_x'], player_atual['pos_z']
+            dx, dz = player_atual['dir_x'], player_atual['dir_z']
+            menor_desvio_angulo = 180.0
+            esta_seguindo = 0
+
+            # compara com todos os outros jogadores no mesmo tique
+            for idx_inimigo, player_inimigo in tique_df.iterrows():
+                if player_inimigo['player_id'] == pid_atual:
+                    continue
+
+                ix, iz = player_inimigo['pos_x'], player_inimigo['pos_z']
+
+                #vetor do player atual até o inimigo
+                vetor_inimigo_x = ix -px
+                vetor_inimigo_z = iz -  pz
+                dist_ate_inimigo = np.sqrt(vetor_inimigo_x**2 + vetor_inimigo_z**2)
+                #ignora se estiver muito longe
+                if dist_ate_inimigo > 300 or dist_ate_inimigo == 0:
+                    continue
+
+                # Normaliza o vetor do inimigo
+                v_inimigo_x = vetor_inimigo_x / dist_ate_inimigo
+                v_inimigo_z = vetor_inimigo_z / dist_ate_inimigo
+                #calcula o angulo entre olhar do player (dx, dz) e a posição do inimigo
+                # Similaridade de cosseno
+                dot_product = (dx * v_inimigo_x) + (dz * v_inimigo_z)
+                # Garante que o valor fique entre -1 e 1 para evitar erros matemáticos
+                dot_product = np.clip(dot_product, -1.0, 1.0)
+
+                angulo_desvio = np.degrees(np.arccos(dot_product))
+
+                if angulo_desvio < menor_desvio_angulo:
+                    menor_desvio_angulo = angulo_desvio
+                
+                # --- VERIFICAÇÃO DE PERSEGUIÇÃO/INTERCEPTAÇÃO ---
+                # Se o player atual está se movendo rápido e a direção do movimento dele
+                # aponta diretamente para a posição futura ou atual do inimigo
+                if player_atual['vel_posicao'] > 4.0 and angulo_desvio < 10.0:
+                    if player_atual['eficiencia_trajeto'] > 0.92:
+                        esta_seguindo = 1
+            # Atualiza o DataFrame principal com os resultados do cruzamento
+            df.at[idx, 'travado_em_player'] = menor_desvio_angulo
+            df.at[idx, 'perseguindo_player'] = esta_seguindo
+            
+    # Agora criamos rótulos baseados nas regras clássicas para testar seu trainer
+    df['alerta_speedhack'] = (df['vel_posicao'] > 9.0).astype(int) # Acima da velocidade máxima de corrida humana
+    df['alerta_aimbot'] = (df['vel_rotacao'] > 15.0).astype(int)   # Rotação sobre-humana instantânea
+    df['alerta_lockon'] = ((df['jitter_mira'] < 0.001) & (df['vel_posicao'] > 0.0)).astype(int)
+    df['alerta_esp_player'] = ((df['travado_em_player'] < 5.0) & (df['mirando'] == 1)).astype(int)
 
 
 
     # SALVAMENTO
-    cols_ia = ['pos_x', 'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira','entropia_mov', 'eficiencia_trajeto', 'mirando']
+    cols_ia = [
+        'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira', 
+        'entropia_mov', 'eficiencia_trajeto', 'travado_em_player', 
+        'perseguindo_player', 'mirando',
+        'alerta_speedhack', 'alerta_aimbot', 'alerta_lockon', 'alerta_esp_player'
+    ]
     # removendo possíveis erros matemáticos ou valores infinitos
     df_final = df[cols_ia].replace([np.inf, -np.inf], np.nan).dropna()
     df_final.to_csv(output_path, index=False)
