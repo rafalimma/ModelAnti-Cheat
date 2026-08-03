@@ -5,8 +5,8 @@ import os
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-06-07_15-26-02-hacker-entropia.txt'
-FILE_OUT = 'datasets/dataset_hacker_entropia.csv'
+FILE_IN = r'log_profiles/script_2026-hacker-scar.log'
+FILE_OUT = 'datasets/hacker_scar.csv'
 INTERVALO_TEMPO = 1.0 
 # ==========================================
 
