@@ -121,17 +121,25 @@ def preprocess_log(input_path, output_path, dt):
         dz_10 = player_df['pos_z'] - player_df['pos_z'].shift(janela)
 
         dist_reta_10 = np.sqrt(dx_10**2 + dz_10**2)
-        eficiencia = (dist_reta_10 / dist_acumulada).fillna(0.0)
+        # Evita divisão por zero se o jogador estiver parado
+        eficiencia = np.where(dist_acumulada > 0.1, dist_reta_10 / dist_acumulada, 0.0)
+        eficiencia = np.nan_to_num(eficiencia, nan=0.0)
 
 
-        df['entropia_mov'] = entropia
         # inserindo de volta no data frame principal
-        df.loc[mask, 'vel_rotacao'] = vel_rot
+        # Atribuição CORRETA por máscara no DataFrame principal
         df.loc[mask, 'vel_posicao'] = vel_lin
         df.loc[mask, 'acel_linear'] = acel_lin
-        df.loc[mask, 'jitter_mira'] = jitter
         df.loc[mask, 'vel_rotacao'] = vel_rot
+        df.loc[mask, 'jitter_mira'] = jitter
+        df.loc[mask, 'entropia_mov'] = entropia
         df.loc[mask, 'eficiencia_trajeto'] = eficiencia
+
+        # --- NOVAS FEATURES DE JANELA TEMPORAL (PERSISTÊNCIA) ---
+        # Média de eficiência nos últimos 20 segundos
+        df.loc[mask, 'eficiencia_mean_20s'] = pd.Series(eficiencia, index=player_df.index).rolling(20, min_periods=1).mean().fillna(0.0)
+        # Média da entropia nos últimos 5 segundos
+        df.loc[mask, 'entropia_mean_10s'] = pd.Series(entropia, index=player_df.index).rolling(10, min_periods=1).mean().fillna(0.0)
 
         '''
         Para saber se o Jogador A está olhando fixamente para o Jogador B através de um obstáculo, 
@@ -140,7 +148,9 @@ def preprocess_log(input_path, output_path, dt):
         #O segredo aqui é que, após calcular as velocidades individuais de cada jogador, 
         #fazemos um segundo loop para comparar os jogadores entre si no mesmo tique de tempo.
 
-    df['travado_em_player'] = 0.0
+    # --- CRUZAMENTO ESPACIAL (ESP / AIMLOCK / PERSEGUIÇÃO) ---
+    # CORREÇÃO: Valor padrão 180.0 (sem alvo próximo) para evitar falso Aimlock em jogadores solo
+    df['travado_em_player'] = 180.0
     df['perseguindo_player'] = 0
     for tempo_tique in df['tempo'].unique():
         tique_df = df[df['tempo'] == tempo_tique]
@@ -193,20 +203,24 @@ def preprocess_log(input_path, output_path, dt):
             # Atualiza o DataFrame principal com os resultados do cruzamento
             df.at[idx, 'travado_em_player'] = menor_desvio_angulo
             df.at[idx, 'perseguindo_player'] = esta_seguindo
+
+    for pid in df['player_id'].unique():
+        mask = df['player_id'] == pid
+        df.loc[mask, 'travado_min_5s'] = df.loc[mask, 'travado_em_player'].rolling(5, min_periods=1).min()
             
     # Agora criamos rótulos baseados nas regras clássicas para testar seu trainer
-    df['alerta_speedhack'] = (df['vel_posicao'] > 9.0).astype(int) # Acima da velocidade máxima de corrida humana
-    df['alerta_aimbot'] = (df['vel_rotacao'] > 15.0).astype(int)   # Rotação sobre-humana instantânea
+    df['alerta_speedhack'] = (df['vel_posicao'] > 9.0).astype(int)
+    df['alerta_aimbot'] = (df['vel_rotacao'] > 15.0).astype(int)
     df['alerta_lockon'] = ((df['jitter_mira'] < 0.001) & (df['vel_posicao'] > 0.0)).astype(int)
     df['alerta_esp_player'] = ((df['travado_em_player'] < 5.0) & (df['mirando'] == 1)).astype(int)
-
 
 
     # SALVAMENTO
     cols_ia = [
         'vel_posicao', 'acel_linear', 'vel_rotacao', 'jitter_mira', 
-        'entropia_mov', 'eficiencia_trajeto', 'travado_em_player', 
-        'perseguindo_player', 'mirando',
+        'entropia_mov', 'eficiencia_trajeto', 
+        'eficiencia_mean_10s', 'entropia_mean_5s', 'travado_min_5s',
+        'travado_em_player', 'perseguindo_player', 'mirando',
         'alerta_speedhack', 'alerta_aimbot', 'alerta_lockon', 'alerta_esp_player'
     ]
     # removendo possíveis erros matemáticos ou valores infinitos
