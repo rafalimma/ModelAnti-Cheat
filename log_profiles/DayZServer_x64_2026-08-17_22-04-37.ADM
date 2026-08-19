@@ -1,0 +1,29 @@
+
+
+******************************************************************************
+AdminLog started on 2026-08-17 at 22:04:37
+22:08:29 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0=) is connecting
+22:10:42 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<4625.4, 10506.7, 339.2>) is connected
+22:11:08 | 2026/8/18 |  [VPPAdminTools] Player 76561199445097358 attempted login, and failed! Total Attempts: 1
+22:15:33 | Player "rafaelglima79" (DEAD) (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<4777.5, 10427.7, 339.0>) died. Stats> Water: 614.972 Energy: 191.102 Bleed sources: 4
+22:15:33 | Player "rafaelglima79" (DEAD) (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<4777.5, 10427.7, 339.0>) bled out
+22:15:57 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6149.8, 2291.8, 11.9>) is connected
+22:17:22 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6284.5, 2296.1, 7.2>)[HP: 98.375] hit by Infectado into RightLeg(3) for 6.5 damage (MeleeInfected)
+22:17:24 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6284.5, 2296.1, 7.2>)[HP: 96.75] hit by Infectado into RightLeg(3) for 6.5 damage (MeleeInfected)
+22:19:13 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6264.7, 2258.2, 6.3>)[HP: 98.5635] hit by Infectado into LeftArm(18) for 8.075 damage (MeleeInfectedLong)
+22:19:19 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 97.0403] hit by Infectado into LeftLeg(8) for 6.5 damage (MeleeInfected)
+22:19:19 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 90.8653] hit by Infectado into Torso(1) for 6.175 damage (MeleeInfected)
+22:19:20 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 89.2403] hit by Infectado into LeftLeg(8) for 6.5 damage (MeleeInfected)
+22:19:20 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 83.0653] hit by Infectado into Torso(1) for 6.175 damage (MeleeInfected)
+22:19:21 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 81.4899] hit by Infectado into RightLeg(3) for 6.5 damage (MeleeInfected)
+22:19:22 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 80.8724] hit by Infectado into LeftArm(18) for 6.175 damage (MeleeInfected)
+22:19:23 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>)[HP: 79.2474] hit by Infectado into RightLeg(3) for 6.5 damage (MeleeInfected)
+22:19:23 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.3, 2265.1, 6.1>) is unconscious
+22:19:23 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6275.5, 2265.1, 6.1>)[HP: 78.6299] hit by Infectado into RightArm(17) for 6.175 damage (MeleeInfected)
+22:19:24 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6276.0, 2265.5, 6.1>)[HP: 77.0049] hit by Infectado into RightLeg(3) for 6.5 damage (MeleeInfected)
+22:20:16 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6276.9, 2266.2, 6.1>) regained consciousness
+22:21:24 | Player "rafaelglima79" (DEAD) (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6284.0, 2274.9, 6.0>) died. Stats> Water: 563.845 Energy: 494.084 Bleed sources: 2
+22:21:24 | Player "rafaelglima79" (DEAD) (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<6284.0, 2274.9, 6.0>) bled out
+22:21:51 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<13986.4, 13006.8, 20.2>) is connected
+22:23:42 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<14010.3, 13032.3, 16.4>) performed EmoteSitA
+22:23:55 | Player "rafaelglima79" (id=aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= pos=<14010.3, 13032.3, 16.5>) has been disconnected
