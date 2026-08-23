@@ -1,0 +1,13 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-08-22_16-34-23.log started at 22.08. 16:35:20
+
+
+
+------------------------------------
+ACERRAFA, 22.08 2026 16:35:20
+Can't compile mission init script'!
+
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c(50): Can't find variable 'characterTypes'
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

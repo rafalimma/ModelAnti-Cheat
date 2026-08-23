@@ -19,8 +19,8 @@ THRESHOLD_HACKER = 0.85
 # ==========================================
 # 1. CARREGAMENTO E ROTULAGEM DOS DATASETS
 # ==========================================
-PATH_NORMAL = 'datasets/normal_longo.csv'
-PATH_HACKER = 'datasets/hacker_scar.csv'
+PATH_NORMAL = 'datasets/normal08-18.csv'
+PATH_HACKER = 'datasets/dataset_hacker_entropia.csv'
 
 def carregar_dados():
     if not os.path.exists(PATH_NORMAL) or not os.path.exists(PATH_HACKER):
@@ -53,9 +53,10 @@ TARGET = 'is_hacker'
 X = df[FEATURES]
 y = df[TARGET]
 
-# Divisão: 80% para Treino da IA, 20% para Teste cego
+# DIVISÃO TEMPORAL (Sem embaralhar)
+# Impede que segundos vizinhos da mesma partida vazem entre Treino e Teste
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
+    X, y, test_size=0.2, shuffle=False
 )
 
 print(f"Total de registros: {len(df)}")

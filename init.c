@@ -33,6 +33,7 @@ void main()
 class CustomMission: MissionServer
 {
     float m_Timer = 0;
+    PlayerBase m_DummyTarget; // Armazena a referência do Dummy
 
     void SetRandomHealth(EntityAI itemEnt)
     {
@@ -43,13 +44,30 @@ class CustomMission: MissionServer
         }
     }
 
-    override PlayerBase CreateCharacter(PlayerIdentity identity, vector pos, ParamsReadContext ctx, string characterName)
+    override PlayerBase CreateCharacter(PlayerIdentity identity, vector pos, ParamsReadContext ctx, string characterTypes)
     {
-        Entity playerEnt;
-        playerEnt = GetGame().CreatePlayer( identity, characterName, pos, 0, "NONE" );
-        Class.CastTo( m_player, playerEnt );
+        // 1. Cria o jogador principal do client
+        Entity playerEnt = GetGame().CreatePlayer(identity, characterTypes, pos, 0, "NONE");
+        PlayerBase m_player;
+        Class.CastTo(m_player, playerEnt);
 
-        GetGame().SelectPlayer( identity, m_player );
+        GetGame().SelectPlayer(identity, m_player);
+
+        // 2. Spawna o Dummy (Boneco Alvo) perto do jogador se ele ainda não existir
+        if (m_player && !m_DummyTarget)
+        {
+            vector posJogador = m_player.GetPosition();
+            vector posAlvo = posJogador + "2.0 0.0 5.0"; // 5m a frente, 2m ao lado
+            posAlvo[1] = GetGame().SurfaceY(posAlvo[0], posAlvo[2]);
+
+            m_DummyTarget = PlayerBase.Cast(GetGame().CreateObjectEx("SurvivorM_Mirek", posAlvo, ECE_PLACE_ON_SURFACE));
+            if (m_DummyTarget)
+            {
+                m_DummyTarget.SetPosition(posAlvo);
+                m_DummyTarget.PlaceOnSurface();
+            }
+        }
+
         return m_player;
     }
 
@@ -93,7 +111,7 @@ class CustomMission: MissionServer
         itemClothing = player.FindAttachmentBySlotName( "Feet" );
     }
 
-    // --- NOVO: FUNÇÃO DE RAYCAST PARA VERIFICAÇÃO DE LINHA DE VISÃO ---
+    // --- FUNÇÃO DE RAYCAST PARA VERIFICAÇÃO DE LINHA DE VISÃO ---
     bool TemVisaoDireta(PlayerBase pOrigin, PlayerBase pTarget)
     {
         int boneIndexA = pOrigin.GetBoneIndexByName("head");
@@ -107,29 +125,21 @@ class CustomMission: MissionServer
 
         vector contactPos, contactNormal;
         int contactComponent;
-        ref array<Object> hitObjects = new array<Object>;
+        ref set<Object> hitObjects = new set<Object>;
 
-        // Dispara o raio verificando colisões de visão (ObjIntersectView)
-        bool colidiu = DayZPhysics.RaycastRV(
-            headA, 
-            headB, 
-            contactPos, 
-            contactNormal, 
-            contactComponent, 
-            hitObjects, 
-            pOrigin, 
-            pTarget, 
-            false, 
-            false, 
-            ObjIntersectView
-        );
-
-        if (colidiu || hitObjects.Count() > 0)
+        bool colidiu = DayZPhysics.RaycastRV(headA, headB, contactPos, contactNormal, contactComponent, hitObjects, pOrigin);
+        if (colidiu)
         {
-            return false; // Existe objeto/parede/relevo ocluindo a visão
+            for (int i = 0; i < hitObjects.Count(); i++)
+            {
+                Object objHit = hitObjects.Get(i);
+                if (objHit && objHit != pTarget)
+                {
+                    return false; // Visão obstruída por parede, árvore ou terreno
+                }
+            }
         }
-
-        return true; // Visão limpa entre as duas cabeças
+        return true; // Visão limpa até o alvo
     }
 
     override void OnUpdate(float timeslice) 
@@ -140,7 +150,7 @@ class CustomMission: MissionServer
         
         if (m_Timer >= 1.0)
         {
-            array<Man> players = new array<Man>;
+            ref array<Man> players = new array<Man>;
             GetGame().GetPlayers(players);
 
             foreach (Man player : players)
@@ -148,6 +158,12 @@ class CustomMission: MissionServer
                 PlayerBase pBody = PlayerBase.Cast(player);
                 if (pBody) 
                 {
+                    string playerID = "unknown";
+                    if (pBody.GetIdentity())
+                    {
+                        playerID = pBody.GetIdentity().GetId();
+                    }
+
                     vector pos = pBody.GetPosition();
                     vector dir = pBody.GetDirection();
 
@@ -164,25 +180,26 @@ class CustomMission: MissionServer
                         }
                     }
 
-                    // --- CALCULA SE O JOGADOR TEM VISÃO DIRETA DO ALVO MAIS PRÓXIMO DA MIRA ---
-                    int temVisao = 1; // Padrão: 1 (Visão livre/Solo)
+                    int temVisao = 1; 
                     float menorAngulo = 180.0;
 
-                    foreach (Man outroPlayer : players)
+                    // Busca todos os PlayerBase no raio de 1000m (incluindo o Dummy sem identity)
+                    array<Object> nearObjects = new array<Object>;
+                    GetGame().GetObjectsAtPosition(pos, 1000.0, nearObjects, NULL);
+
+                    foreach (Object obj : nearObjects)
                     {
-                        PlayerBase pOther = PlayerBase.Cast(outroPlayer);
+                        PlayerBase pOther = PlayerBase.Cast(obj);
                         if (pOther && pOther != pBody)
                         {
                             vector posOther = pOther.GetPosition();
                             vector dirToTarget = posOther - pos;
                             float dist = dirToTarget.Length();
 
-                            // Avalia apenas se estiver em um raio de até 1000 metros
                             if (dist > 0 && dist <= 1000)
                             {
                                 dirToTarget.Normalize();
                                 
-                                // Produto escalar simples para achar a orientação
                                 float dot = (dir[0] * dirToTarget[0]) + (dir[2] * dirToTarget[2]);
                                 float MathClip = Math.Clamp(dot, -1.0, 1.0);
                                 float angulo = Math.Acos(MathClip) * Math.RAD2DEG;
@@ -191,16 +208,15 @@ class CustomMission: MissionServer
                                 {
                                     menorAngulo = angulo;
 
-                                    // Se estiver com a mira próxima (< 15°), executa o teste de Raycast
                                     if (angulo < 15.0)
                                     {
                                         if (TemVisaoDireta(pBody, pOther))
                                         {
-                                            temVisao = 1;
+                                            temVisao = 1; // Olhando com linha de visão limpa
                                         }
                                         else
                                         {
-                                            temVisao = 0; // Ocluído por terreno, prédios ou árvores!
+                                            temVisao = 0; // Olhando ATRAVÉS DA PAREDE/OBSTÁCULO
                                         }
                                     }
                                 }
@@ -208,8 +224,7 @@ class CustomMission: MissionServer
                         }
                     }
 
-                    // DATA_LOG atualizado incluindo | temVisao na 10ª posição (parts[9])
-                    Print("DATA_LOG | " + GetGame().GetTime() + " | " + pBody.GetID() + " | " + pos[0] + " | " + pos[1] + " | " + pos[2] + " | " + dir[0] + " | " + dir[2] + " | " + isAiming + " | " + weaponName + " | " + temVisao);
+                    Print("DATA_LOG | " + GetGame().GetTime() + " | " + playerID + " | " + pos[0] + " | " + pos[1] + " | " + pos[2] + " | " + dir[0] + " | " + dir[2] + " | " + isAiming + " | " + weaponName + " | " + temVisao);
                 }
             }
             m_Timer = 0;
