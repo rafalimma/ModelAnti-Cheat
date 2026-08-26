@@ -1,0 +1,50 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-08-26_09-46-22.log started at 26.08. 10:18:11
+
+
+
+------------------------------------
+ACERRAFA, 26.08 2026 10:18:11
+Virtual Machine Exception
+
+Reason: [WeaponStableState::ValidateMuzzleArray] :: [ERROR] :: Muzzle array validation has failed. Please set up the correct muzzle states by overriding InitMuzzleArray.
+
+Class:      'WeaponStableState'
+Function: 'ValidateMuzzleArray'
+Stack trace:
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:195 Function ValidateMuzzleArray
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:36 Function WeaponStableState@2152#1
+scripts/4_World/entities\firearms\rifle_base.c:18 Function InitStateMachine
+scripts/4_World/entities\firearms\weapon_base.c:130 Function Weapon_Base@2132#1
+scripts/3_Game/systems\inventory\inventory.c:884 Function CreateInInventory
+scripts/3_Game/systems\inventory\humaninventory.c:67 Function CreateInInventory
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:177 Function CreateEntity
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:372 Function SpawnItem
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 26.08 2026 10:18:11
+Virtual Machine Exception
+
+Reason: [WeaponStableState::ValidateMuzzleArray] :: [ERROR] :: Muzzle array validation has failed. Please set up the correct muzzle states by overriding InitMuzzleArray.
+
+Class:      'WeaponStableState'
+Function: 'ValidateMuzzleArray'
+Stack trace:
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:195 Function ValidateMuzzleArray
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:36 Function WeaponStableState@2152#1
+scripts/4_World/entities\firearms\rifle_base.c:18 Function InitStateMachine
+scripts/4_World/entities\firearms\weapon_base.c:130 Function Weapon_Base@2132#1
+scripts/3_Game/systems\inventory\humaninventory.c:69 Function CreateInInventory
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:177 Function CreateEntity
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:372 Function SpawnItem
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

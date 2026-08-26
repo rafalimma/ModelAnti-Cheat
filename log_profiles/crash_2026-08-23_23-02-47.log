@@ -1,0 +1,13 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-08-23_23-02-47.log started at 23.08. 23:03:26
+
+
+
+------------------------------------
+ACERRAFA, 23.08 2026 23:03:26
+Can't compile mission init script'!
+
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c(189): Undefined function 'PlayerBase.GetBoneForwardWS'
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

@@ -1,0 +1,22 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-08-26_11-26-44.log started at 26.08. 11:28:22
+
+
+
+------------------------------------
+ACERRAFA, 26.08 2026 11:28:22
+Virtual Machine Exception
+
+Reason: [WeaponStableState::ValidateMuzzleArray] :: [ERROR] :: Muzzle array validation has failed. Please set up the correct muzzle states by overriding InitMuzzleArray.
+
+Class:      'WeaponStableState'
+Function: 'ValidateMuzzleArray'
+Stack trace:
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:195 Function ValidateMuzzleArray
+scripts/4_World/entities\firearms\fsm\states\weaponstablestate.c:36 Function WeaponStableState@2152#1
+scripts/4_World/entities\firearms\rifle_base.c:18 Function InitStateMachine
+scripts/4_World/entities\firearms\weapon_base.c:130 Function Weapon_Base@2132#1
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c:6 Function main
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
