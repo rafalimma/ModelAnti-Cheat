@@ -2,15 +2,17 @@ import pandas as pd
 import numpy as np
 import os
 import argparse
-
+# senha do server 098765
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-08-26_11-26-44.log'
-FILE_OUT = 'datasets/mirando_em_player_proximo.csv'
+FILE_IN = r'log_profiles/script_2026-09-01_23-19-42.log'
+FILE_OUT = 'datasets/hacker_com_player.csv'
 INTERVALO_TEMPO = 1.0 
 ANGULO_MIRA_DEG = 5.0
-DURACAO_EVIDENCIA_SEG = 4.0
+DISTANCIA_ESP_MIN = 300.0
+DURACAO_ESP_SEG = 3.0
+DURACAO_MOVIMENTO_SEG = 4.0
 JANELA_ANALISE_SEG = 10.0
 JANELA_PONTOS_SEG = 60.0
 LIMIAR_REVISAO = 3
@@ -25,14 +27,18 @@ FEATURES_IA_RECOMENDADAS = [
     'travado_em_player', 'distancia_alvo', 'tem_visao',
     'alvo_encontrado', 'alvo_na_mira', 'mirando', 'mirando_ads',
     'mirando_alvo', 'alvo_oculto_na_mira', 'mirando_alvo_oculto',
+    'alvo_oculto_300m_na_mira', 'mirando_alvo_oculto_300m',
     'duracao_mirando_alvo_s', 'duracao_rastreando_oculto_s',
-    'duracao_mirando_oculto_s', 'taxa_alvo_na_mira_10s',
+    'duracao_mirando_oculto_s', 'duracao_observando_oculto_300m_s',
+    'duracao_mirando_oculto_300m_s', 'taxa_alvo_na_mira_10s',
     'taxa_alvo_oculto_10s', 'taxa_mirando_alvo_10s',
     'taxa_mira_oculta_10s', 'taxa_visao_direta_10s',
     'angulo_medio_alvo_10s', 'angulo_minimo_alvo_10s',
     'distancia_media_alvo_10s', 'vel_rotacao_media_10s',
     'vel_rotacao_std_10s', 'jitter_medio_10s',
     'persistencia_oculta_max_10s', 'persistencia_mira_oculta_max_10s',
+    'taxa_alvo_oculto_300m_10s', 'taxa_mira_oculta_300m_10s',
+    'persistencia_oculta_300m_max_10s', 'persistencia_mira_oculta_300m_max_10s',
     'perseguindo_player', 'duracao_perseguicao_oculta_s',
     'duracao_speedhack_s'
 ]
@@ -47,8 +53,11 @@ FEATURES_JANELA_IA_RECOMENDADAS = [
     'taxa_visao_direta', 'taxa_alvo_oculto', 'taxa_mirando_alvo',
     'taxa_mira_oculta', 'duracao_rastreando_oculto_max',
     'duracao_mirando_oculto_max', 'duracao_perseguicao_oculta_max',
+    'taxa_alvo_oculto_300m', 'taxa_mira_oculta_300m',
+    'duracao_observando_oculto_300m_max', 'duracao_mirando_oculto_300m_max',
     'duracao_speedhack_max'
 ]
+
 # ==========================================
 
 def preprocess_log(input_path, output_path, dt):
@@ -200,6 +209,17 @@ def preprocess_log(input_path, output_path, dt):
         (df['alvo_oculto_na_mira'] == 1) &
         (df['mirando'] == 1)
     ).astype(int)
+    # Estado neutro usado para ESP/X-ray: o alvo está alinhado, oculto e além
+    # da distância mínima configurada. Olhar e mirar armado são preservados
+    # separadamente para que a IA aprenda intensidades diferentes.
+    df['alvo_oculto_300m_na_mira'] = (
+        (df['alvo_oculto_na_mira'] == 1) &
+        (df['distancia_alvo'] > DISTANCIA_ESP_MIN)
+    ).astype(int)
+    df['mirando_alvo_oculto_300m'] = (
+        (df['alvo_oculto_300m_na_mira'] == 1) &
+        (df['mirando'] == 1)
+    ).astype(int)
 
     def duracao_consecutiva(condicao):
         """Soma o tempo real apenas enquanto a condição permanece contínua."""
@@ -208,13 +228,17 @@ def preprocess_log(input_path, output_path, dt):
             idx = list(indices)
             ativa = condicao.loc[idx].astype(bool)
             grupos = (~ativa).cumsum()
-            duracao = df.loc[idx, 'delta_t'].where(ativa, 0.0).groupby(grupos).cumsum()
+            # A primeira amostra da sequência começa em zero. Só acumulamos o
+            # delta real quando a amostra anterior também estava ativa.
+            anterior_ativa = ativa.shift(1, fill_value=False)
+            incremento = df.loc[idx, 'delta_t'].where(ativa & anterior_ativa, 0.0)
+            duracao = incremento.groupby(grupos).cumsum()
             resultado.loc[idx] = duracao.to_numpy()
         return resultado
 
-    def evento_novo_bloco(duracao):
-        """Gera um evento a cada novo bloco completo de quatro segundos."""
-        blocos = np.floor(duracao / DURACAO_EVIDENCIA_SEG).astype(int)
+    def evento_novo_bloco(duracao, tamanho_bloco_seg):
+        """Gera um evento a cada novo bloco completo de tempo real."""
+        blocos = np.floor(duracao / tamanho_bloco_seg).astype(int)
         anterior = blocos.groupby(df['player_id'], sort=False).shift(1).fillna(0).astype(int)
         return (blocos > anterior).astype(int)
 
@@ -224,11 +248,17 @@ def preprocess_log(input_path, output_path, dt):
     df['duracao_mirando_alvo_s'] = duracao_consecutiva(df['mirando_alvo'] == 1)
     df['duracao_rastreando_oculto_s'] = duracao_consecutiva(df['alvo_oculto_na_mira'] == 1)
     df['duracao_mirando_oculto_s'] = duracao_consecutiva(df['mirando_alvo_oculto'] == 1)
+    df['duracao_observando_oculto_300m_s'] = duracao_consecutiva(
+        df['alvo_oculto_300m_na_mira'] == 1
+    )
+    df['duracao_mirando_oculto_300m_s'] = duracao_consecutiva(
+        df['mirando_alvo_oculto_300m'] == 1
+    )
     df['tracking_oculto_suspeito'] = (
-        df['duracao_rastreando_oculto_s'] >= DURACAO_EVIDENCIA_SEG
+        df['duracao_observando_oculto_300m_s'] >= DURACAO_ESP_SEG
     ).astype(int)
     df['mira_armada_oculta_suspeita'] = (
-        df['duracao_mirando_oculto_s'] >= DURACAO_EVIDENCIA_SEG
+        df['duracao_mirando_oculto_300m_s'] >= DURACAO_ESP_SEG
     ).astype(int)
 
     # Features temporais neutras para a IA. Elas descrevem o comportamento na
@@ -242,6 +272,12 @@ def preprocess_log(input_path, output_path, dt):
     df['taxa_alvo_oculto_10s'] = rolling_por_jogador('alvo_oculto_na_mira', 'mean')
     df['taxa_mirando_alvo_10s'] = rolling_por_jogador('mirando_alvo', 'mean')
     df['taxa_mira_oculta_10s'] = rolling_por_jogador('mirando_alvo_oculto', 'mean')
+    df['taxa_alvo_oculto_300m_10s'] = rolling_por_jogador(
+        'alvo_oculto_300m_na_mira', 'mean'
+    )
+    df['taxa_mira_oculta_300m_10s'] = rolling_por_jogador(
+        'mirando_alvo_oculto_300m', 'mean'
+    )
     df['vel_rotacao_media_10s'] = rolling_por_jogador('vel_rotacao', 'mean')
     df['vel_rotacao_std_10s'] = rolling_por_jogador('vel_rotacao', 'std').fillna(0.0)
     df['jitter_medio_10s'] = rolling_por_jogador('jitter_mira', 'mean')
@@ -250,6 +286,12 @@ def preprocess_log(input_path, output_path, dt):
     )
     df['persistencia_mira_oculta_max_10s'] = rolling_por_jogador(
         'duracao_mirando_oculto_s', 'max'
+    )
+    df['persistencia_oculta_300m_max_10s'] = rolling_por_jogador(
+        'duracao_observando_oculto_300m_s', 'max'
+    )
+    df['persistencia_mira_oculta_300m_max_10s'] = rolling_por_jogador(
+        'duracao_mirando_oculto_300m_s', 'max'
     )
 
     alvo_valido = df['alvo_encontrado'].astype(float)
@@ -283,6 +325,7 @@ def preprocess_log(input_path, output_path, dt):
         (df['vel_posicao'] > 4.0) &
         (df['travado_em_player'] < 10.0) &
         (df['tem_visao'] == 0) &
+        (df['distancia_alvo'] > DISTANCIA_ESP_MIN) &
         (df['eficiencia_trajeto'] > 0.92) &
         (df['var_camera_durante_corrida'] < 0.05),
         1, 0
@@ -291,7 +334,9 @@ def preprocess_log(input_path, output_path, dt):
     # --- 3. EVIDÊNCIAS E PONTUAÇÃO EXPLICÁVEL ---
     # Speedhack exige persistência para não punir um salto isolado causado por lag.
     df['duracao_speedhack_s'] = duracao_consecutiva(df['vel_posicao'] > 9.0)
-    df['alerta_speedhack'] = (df['duracao_speedhack_s'] >= DURACAO_EVIDENCIA_SEG).astype(int)
+    df['alerta_speedhack'] = (
+        df['duracao_speedhack_s'] >= DURACAO_MOVIMENTO_SEG
+    ).astype(int)
 
     # Com telemetria de 1 Hz, 720 graus/s seria inalcançável matematicamente.
     # Um snap acima de 120 graus/s só pontua se terminar alinhado e com arma/ADS.
@@ -300,36 +345,36 @@ def preprocess_log(input_path, output_path, dt):
         (df['mirando_alvo'] == 1)
     ).astype(int)
     df['alerta_lockon'] = (
-        (df['duracao_mirando_alvo_s'] >= DURACAO_EVIDENCIA_SEG) &
+        (df['duracao_mirando_alvo_s'] >= DURACAO_MOVIMENTO_SEG) &
         (df['jitter_mira'] < 0.01)
     ).astype(int)
 
-    # ESP distante só é evidência após quatro segundos contínuos; um cruzamento
-    # casual da câmera, como ocorreu no dataset normal, não gera alerta.
+    # ESP/X-ray só pontua quando o alvo está oculto, alinhado, acima de 300 m e
+    # acompanhado por ao menos três segundos reais e contínuos.
     df['esp_oculto_longa_distancia'] = (
-        (df['duracao_rastreando_oculto_s'] >= DURACAO_EVIDENCIA_SEG) &
-        (df['distancia_alvo'] > 150.0)
+        df['duracao_observando_oculto_300m_s'] >= DURACAO_ESP_SEG
     ).astype(int)
 
     df['duracao_perseguicao_oculta_s'] = duracao_consecutiva(df['perseguindo_player'] == 1)
 
-    evento_tracking = evento_novo_bloco(df['duracao_rastreando_oculto_s'])
-    evento_mira_oculta = evento_novo_bloco(df['duracao_mirando_oculto_s'])
-    evento_longa_distancia = evento_novo_bloco(
-        duracao_consecutiva(
-            (df['alvo_oculto_na_mira'] == 1) &
-            (df['distancia_alvo'] > 150.0)
-        )
+    evento_tracking = evento_novo_bloco(
+        df['duracao_observando_oculto_300m_s'], DURACAO_ESP_SEG
     )
-    evento_perseguicao = evento_novo_bloco(df['duracao_perseguicao_oculta_s'])
-    evento_speedhack = evento_novo_bloco(df['duracao_speedhack_s'])
+    evento_mira_oculta = evento_novo_bloco(
+        df['duracao_mirando_oculto_300m_s'], DURACAO_ESP_SEG
+    )
+    evento_perseguicao = evento_novo_bloco(
+        df['duracao_perseguicao_oculta_s'], DURACAO_ESP_SEG
+    )
+    evento_speedhack = evento_novo_bloco(
+        df['duracao_speedhack_s'], DURACAO_MOVIMENTO_SEG
+    )
 
-    # Cada quatro segundos contínuos geram novos pontos. Sinais correlatos podem
-    # reforçar a decisão, mas banimento exige repetição e mais de uma evidência.
+    # A cada três segundos ocultos acima de 300 m: olhar soma um ponto e manter
+    # arma/ADS soma outro. Quanto maior a persistência, maior a pontuação.
     df['pontos_evento'] = (
         evento_tracking +
         evento_mira_oculta +
-        evento_longa_distancia +
         evento_perseguicao +
         df['alerta_aimbot'] +
         (2 * evento_speedhack)
@@ -343,7 +388,6 @@ def preprocess_log(input_path, output_path, dt):
     tipos_evento = pd.DataFrame({
         'tracking': evento_tracking,
         'mira_oculta': evento_mira_oculta,
-        'longa_distancia': evento_longa_distancia,
         'perseguicao': evento_perseguicao,
         'aimbot': df['alerta_aimbot'],
         'speedhack': evento_speedhack
@@ -435,8 +479,12 @@ def preprocess_log(input_path, output_path, dt):
         taxa_alvo_oculto=('alvo_oculto_na_mira', 'mean'),
         taxa_mirando_alvo=('mirando_alvo', 'mean'),
         taxa_mira_oculta=('mirando_alvo_oculto', 'mean'),
+        taxa_alvo_oculto_300m=('alvo_oculto_300m_na_mira', 'mean'),
+        taxa_mira_oculta_300m=('mirando_alvo_oculto_300m', 'mean'),
         duracao_rastreando_oculto_max=('duracao_rastreando_oculto_s', 'max'),
         duracao_mirando_oculto_max=('duracao_mirando_oculto_s', 'max'),
+        duracao_observando_oculto_300m_max=('duracao_observando_oculto_300m_s', 'max'),
+        duracao_mirando_oculto_300m_max=('duracao_mirando_oculto_300m_s', 'max'),
         duracao_perseguicao_oculta_max=('duracao_perseguicao_oculta_s', 'max'),
         duracao_speedhack_max=('duracao_speedhack_s', 'max'),
         pontos_evento_total=('pontos_evento', 'sum'),
