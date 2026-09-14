@@ -6,12 +6,16 @@ import argparse
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-09-01_23-19-42.log'
-FILE_OUT = 'datasets/hacker_com_player.csv'
+FILE_IN = r'log_profiles/script_2026-09-04_23-42-20.log'
+FILE_OUT = 'datasets/partida_1acao_hacker_raw.csv'
 INTERVALO_TEMPO = 1.0 
 ANGULO_MIRA_DEG = 5.0
+ANGULO_PRECISAO_ESP_DEG = 1.0
 DISTANCIA_ESP_MIN = 300.0
 DURACAO_ESP_SEG = 3.0
+DURACAO_PRECISAO_ESP_SEG = 3.0
+JANELA_REPETICAO_ESP_SEG = 120.0
+MIN_EPISODIOS_ESP_FORTE = 2
 DURACAO_MOVIMENTO_SEG = 4.0
 JANELA_ANALISE_SEG = 10.0
 JANELA_PONTOS_SEG = 60.0
@@ -28,9 +32,12 @@ FEATURES_IA_RECOMENDADAS = [
     'alvo_encontrado', 'alvo_na_mira', 'mirando', 'mirando_ads',
     'mirando_alvo', 'alvo_oculto_na_mira', 'mirando_alvo_oculto',
     'alvo_oculto_300m_na_mira', 'mirando_alvo_oculto_300m',
+    'mirando_ads_alvo_oculto_300m', 'alinhamento_preciso_oculto_300m',
     'duracao_mirando_alvo_s', 'duracao_rastreando_oculto_s',
     'duracao_mirando_oculto_s', 'duracao_observando_oculto_300m_s',
-    'duracao_mirando_oculto_300m_s', 'taxa_alvo_na_mira_10s',
+    'duracao_mirando_oculto_300m_s', 'duracao_ads_oculto_300m_s',
+    'duracao_precisao_oculta_300m_s', 'contagem_episodios_esp_120s',
+    'contagem_episodios_ads_120s', 'taxa_alvo_na_mira_10s',
     'taxa_alvo_oculto_10s', 'taxa_mirando_alvo_10s',
     'taxa_mira_oculta_10s', 'taxa_visao_direta_10s',
     'angulo_medio_alvo_10s', 'angulo_minimo_alvo_10s',
@@ -38,6 +45,7 @@ FEATURES_IA_RECOMENDADAS = [
     'vel_rotacao_std_10s', 'jitter_medio_10s',
     'persistencia_oculta_max_10s', 'persistencia_mira_oculta_max_10s',
     'taxa_alvo_oculto_300m_10s', 'taxa_mira_oculta_300m_10s',
+    'taxa_ads_oculta_300m_10s', 'taxa_precisao_oculta_300m_10s',
     'persistencia_oculta_300m_max_10s', 'persistencia_mira_oculta_300m_max_10s',
     'perseguindo_player', 'duracao_perseguicao_oculta_s',
     'duracao_speedhack_s'
@@ -55,6 +63,9 @@ FEATURES_JANELA_IA_RECOMENDADAS = [
     'duracao_mirando_oculto_max', 'duracao_perseguicao_oculta_max',
     'taxa_alvo_oculto_300m', 'taxa_mira_oculta_300m',
     'duracao_observando_oculto_300m_max', 'duracao_mirando_oculto_300m_max',
+    'taxa_ads_oculta_300m', 'taxa_precisao_oculta_300m',
+    'duracao_ads_oculto_300m_max', 'duracao_precisao_oculta_300m_max',
+    'contagem_episodios_esp_120s_max', 'contagem_episodios_ads_120s_max',
     'duracao_speedhack_max'
 ]
 
@@ -220,6 +231,14 @@ def preprocess_log(input_path, output_path, dt):
         (df['alvo_oculto_300m_na_mira'] == 1) &
         (df['mirando'] == 1)
     ).astype(int)
+    df['mirando_ads_alvo_oculto_300m'] = (
+        (df['alvo_oculto_300m_na_mira'] == 1) &
+        (df['mirando_ads'] == 1)
+    ).astype(int)
+    df['alinhamento_preciso_oculto_300m'] = (
+        (df['mirando_alvo_oculto_300m'] == 1) &
+        (df['travado_em_player'] <= ANGULO_PRECISAO_ESP_DEG)
+    ).astype(int)
 
     def duracao_consecutiva(condicao):
         """Soma o tempo real apenas enquanto a condição permanece contínua."""
@@ -242,6 +261,11 @@ def preprocess_log(input_path, output_path, dt):
         anterior = blocos.groupby(df['player_id'], sort=False).shift(1).fillna(0).astype(int)
         return (blocos > anterior).astype(int)
 
+    def cruzou_limiar(duracao, limiar_seg):
+        """Marca uma vez cada episódio que alcança o tempo mínimo configurado."""
+        anterior = duracao.groupby(df['player_id'], sort=False).shift(1).fillna(0.0)
+        return ((duracao >= limiar_seg) & (anterior < limiar_seg)).astype(int)
+
     janela_analise = max(1, int(round(JANELA_ANALISE_SEG / max(float(dt), 0.1))))
     janela_pontos = max(1, int(round(JANELA_PONTOS_SEG / max(float(dt), 0.1))))
 
@@ -253,6 +277,12 @@ def preprocess_log(input_path, output_path, dt):
     )
     df['duracao_mirando_oculto_300m_s'] = duracao_consecutiva(
         df['mirando_alvo_oculto_300m'] == 1
+    )
+    df['duracao_ads_oculto_300m_s'] = duracao_consecutiva(
+        df['mirando_ads_alvo_oculto_300m'] == 1
+    )
+    df['duracao_precisao_oculta_300m_s'] = duracao_consecutiva(
+        df['alinhamento_preciso_oculto_300m'] == 1
     )
     df['tracking_oculto_suspeito'] = (
         df['duracao_observando_oculto_300m_s'] >= DURACAO_ESP_SEG
@@ -277,6 +307,12 @@ def preprocess_log(input_path, output_path, dt):
     )
     df['taxa_mira_oculta_300m_10s'] = rolling_por_jogador(
         'mirando_alvo_oculto_300m', 'mean'
+    )
+    df['taxa_ads_oculta_300m_10s'] = rolling_por_jogador(
+        'mirando_ads_alvo_oculto_300m', 'mean'
+    )
+    df['taxa_precisao_oculta_300m_10s'] = rolling_por_jogador(
+        'alinhamento_preciso_oculto_300m', 'mean'
     )
     df['vel_rotacao_media_10s'] = rolling_por_jogador('vel_rotacao', 'mean')
     df['vel_rotacao_std_10s'] = rolling_por_jogador('vel_rotacao', 'std').fillna(0.0)
@@ -349,19 +385,30 @@ def preprocess_log(input_path, output_path, dt):
         (df['jitter_mira'] < 0.01)
     ).astype(int)
 
-    # ESP/X-ray só pontua quando o alvo está oculto, alinhado, acima de 300 m e
-    # acompanhado por ao menos três segundos reais e contínuos.
+    # O evento primário de ESP/X-ray exige arma/mira ativa. Apenas olhar para um
+    # alvo oculto continua disponível como telemetria e gera no máximo suspeita leve.
     df['esp_oculto_longa_distancia'] = (
-        df['duracao_observando_oculto_300m_s'] >= DURACAO_ESP_SEG
+        df['duracao_mirando_oculto_300m_s'] >= DURACAO_ESP_SEG
     ).astype(int)
 
     df['duracao_perseguicao_oculta_s'] = duracao_consecutiva(df['perseguindo_player'] == 1)
 
-    evento_tracking = evento_novo_bloco(
+    # Observação sem arma marca somente o início de cada episódio. A mira oculta
+    # armada pode acumular evidência conforme permanece contínua.
+    evento_observacao_leve = cruzou_limiar(
         df['duracao_observando_oculto_300m_s'], DURACAO_ESP_SEG
     )
-    evento_mira_oculta = evento_novo_bloco(
+    evento_esp_primario = evento_novo_bloco(
         df['duracao_mirando_oculto_300m_s'], DURACAO_ESP_SEG
+    )
+    episodio_esp_novo = cruzou_limiar(
+        df['duracao_mirando_oculto_300m_s'], DURACAO_ESP_SEG
+    )
+    episodio_ads_novo = cruzou_limiar(
+        df['duracao_ads_oculto_300m_s'], DURACAO_ESP_SEG
+    )
+    evento_precisao_oculta = cruzou_limiar(
+        df['duracao_precisao_oculta_300m_s'], DURACAO_PRECISAO_ESP_SEG
     )
     evento_perseguicao = evento_novo_bloco(
         df['duracao_perseguicao_oculta_s'], DURACAO_ESP_SEG
@@ -370,12 +417,49 @@ def preprocess_log(input_path, output_path, dt):
         df['duracao_speedhack_s'], DURACAO_MOVIMENTO_SEG
     )
 
-    # A cada três segundos ocultos acima de 300 m: olhar soma um ponto e manter
-    # arma/ADS soma outro. Quanto maior a persistência, maior a pontuação.
+    janela_repeticao = max(
+        1, int(round(JANELA_REPETICAO_ESP_SEG / max(float(dt), 0.1)))
+    )
+    df['contagem_episodios_esp_120s'] = episodio_esp_novo.groupby(
+        df['player_id'], sort=False
+    ).transform(lambda s: s.rolling(janela_repeticao, min_periods=1).sum()).astype(int)
+    df['contagem_episodios_ads_120s'] = episodio_ads_novo.groupby(
+        df['player_id'], sort=False
+    ).transform(lambda s: s.rolling(janela_repeticao, min_periods=1).sum()).astype(int)
+
+    df['evidencia_esp_repetido'] = (
+        df['contagem_episodios_esp_120s'] >= MIN_EPISODIOS_ESP_FORTE
+    ).astype(int)
+    df['evidencia_ads_oculto_repetido'] = (
+        df['contagem_episodios_ads_120s'] >= MIN_EPISODIOS_ESP_FORTE
+    ).astype(int)
+    df['evidencia_precisao_oculta'] = (
+        df['duracao_precisao_oculta_300m_s'] >= DURACAO_PRECISAO_ESP_SEG
+    ).astype(int)
+
+    # Perseguição é evidência secundária: só pontua se houve um ESP primário
+    # armado nos últimos 60 segundos. Isoladamente, nunca cria suspeita de hack.
+    esp_primario_recente = episodio_esp_novo.groupby(
+        df['player_id'], sort=False
+    ).transform(lambda s: s.rolling(janela_pontos, min_periods=1).max()).astype(int)
+    evento_perseguicao_corrobora = (evento_perseguicao & esp_primario_recente).astype(int)
+
+    def inicio_evidencia(coluna):
+        anterior = coluna.groupby(df['player_id'], sort=False).shift(1).fillna(0).astype(int)
+        return ((coluna == 1) & (anterior == 0)).astype(int)
+
+    evento_esp_repetido = inicio_evidencia(df['evidencia_esp_repetido'])
+    evento_ads_repetido = inicio_evidencia(df['evidencia_ads_oculto_repetido'])
+
+    # A observação desarmada vale apenas um ponto por episódio. Mira oculta armada,
+    # precisão extrema e repetição têm peso maior; perseguição apenas corrobora.
     df['pontos_evento'] = (
-        evento_tracking +
-        evento_mira_oculta +
-        evento_perseguicao +
+        evento_observacao_leve +
+        (2 * evento_esp_primario) +
+        evento_perseguicao_corrobora +
+        (2 * evento_precisao_oculta) +
+        (2 * evento_esp_repetido) +
+        (2 * evento_ads_repetido) +
         df['alerta_aimbot'] +
         (2 * evento_speedhack)
     ).astype(int)
@@ -386,9 +470,10 @@ def preprocess_log(input_path, output_path, dt):
     )
 
     tipos_evento = pd.DataFrame({
-        'tracking': evento_tracking,
-        'mira_oculta': evento_mira_oculta,
-        'perseguicao': evento_perseguicao,
+        'esp_primario': episodio_esp_novo,
+        'esp_repetido': evento_esp_repetido,
+        'ads_oculto_repetido': evento_ads_repetido,
+        'precisao_oculta': evento_precisao_oculta,
         'aimbot': df['alerta_aimbot'],
         'speedhack': evento_speedhack
     })
@@ -399,28 +484,39 @@ def preprocess_log(input_path, output_path, dt):
         )
         df['tipos_evidencia_60s'] += recente.astype(int)
 
+    df['candidato_revisao'] = (
+        df['pontos_suspeita_60s'] >= LIMIAR_REVISAO
+    ).astype(int)
+
+    evidencia_forte_esp = (
+        (df['evidencia_ads_oculto_repetido'] == 1) |
+        (df['evidencia_precisao_oculta'] == 1) |
+        (df['evidencia_esp_repetido'] == 1)
+    )
+    df['esp_alto_risco'] = (
+        (esp_primario_recente == 1) &
+        evidencia_forte_esp &
+        (df['pontos_suspeita_60s'] >= LIMIAR_BANIMENTO)
+    ).astype(int)
+
+    # O nome é mantido por compatibilidade, mas significa revisão prioritária.
+    # Não deve provocar banimento automático no servidor.
+    df['candidato_banimento'] = (
+        (df['esp_alto_risco'] == 1) |
+        (df['duracao_speedhack_s'] >= 10.0)
+    ).astype(int)
     df['nivel_suspeita'] = np.select(
         [
-            df['pontos_suspeita_60s'] >= LIMIAR_BANIMENTO,
-            df['pontos_suspeita_60s'] >= LIMIAR_REVISAO,
+            df['candidato_banimento'] == 1,
+            df['candidato_revisao'] == 1,
             df['pontos_suspeita_60s'] >= 1
         ],
         [3, 2, 1],
         default=0
     ).astype(int)
-    df['candidato_revisao'] = (
-        df['pontos_suspeita_60s'] >= LIMIAR_REVISAO
-    ).astype(int)
-    df['candidato_banimento'] = (
-        (
-            (df['pontos_suspeita_60s'] >= LIMIAR_BANIMENTO) &
-            (df['tipos_evidencia_60s'] >= 2)
-        ) |
-        (df['duracao_speedhack_s'] >= 10.0)
-    ).astype(int)
 
     # Alias geral mantido por compatibilidade com análises anteriores.
-    df['wallhack_suspeito'] = df['tracking_oculto_suspeito']
+    df['wallhack_suspeito'] = df['esp_oculto_longa_distancia']
 
     # --- 4. EXPORTAÇÃO: FEATURES NEUTRAS + LEITURA HUMANA ---
     # As três primeiras colunas são metadados para localizar a faixa da run e não
@@ -429,7 +525,9 @@ def preprocess_log(input_path, output_path, dt):
     colunas_analise = [
         'tracking_oculto_suspeito', 'mira_armada_oculta_suspeita',
         'wallhack_suspeito', 'alerta_speedhack', 'alerta_aimbot',
-        'alerta_lockon', 'esp_oculto_longa_distancia', 'pontos_evento',
+        'alerta_lockon', 'esp_oculto_longa_distancia',
+        'evidencia_esp_repetido', 'evidencia_ads_oculto_repetido',
+        'evidencia_precisao_oculta', 'esp_alto_risco', 'pontos_evento',
         'pontos_suspeita_60s', 'tipos_evidencia_60s', 'nivel_suspeita',
         'candidato_revisao', 'candidato_banimento'
     ]
@@ -481,10 +579,16 @@ def preprocess_log(input_path, output_path, dt):
         taxa_mira_oculta=('mirando_alvo_oculto', 'mean'),
         taxa_alvo_oculto_300m=('alvo_oculto_300m_na_mira', 'mean'),
         taxa_mira_oculta_300m=('mirando_alvo_oculto_300m', 'mean'),
+        taxa_ads_oculta_300m=('mirando_ads_alvo_oculto_300m', 'mean'),
+        taxa_precisao_oculta_300m=('alinhamento_preciso_oculto_300m', 'mean'),
         duracao_rastreando_oculto_max=('duracao_rastreando_oculto_s', 'max'),
         duracao_mirando_oculto_max=('duracao_mirando_oculto_s', 'max'),
         duracao_observando_oculto_300m_max=('duracao_observando_oculto_300m_s', 'max'),
         duracao_mirando_oculto_300m_max=('duracao_mirando_oculto_300m_s', 'max'),
+        duracao_ads_oculto_300m_max=('duracao_ads_oculto_300m_s', 'max'),
+        duracao_precisao_oculta_300m_max=('duracao_precisao_oculta_300m_s', 'max'),
+        contagem_episodios_esp_120s_max=('contagem_episodios_esp_120s', 'max'),
+        contagem_episodios_ads_120s_max=('contagem_episodios_ads_120s', 'max'),
         duracao_perseguicao_oculta_max=('duracao_perseguicao_oculta_s', 'max'),
         duracao_speedhack_max=('duracao_speedhack_s', 'max'),
         pontos_evento_total=('pontos_evento', 'sum'),
