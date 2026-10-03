@@ -1,0 +1,76 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\script_2026-09-14_21-50-25.log started at 14.09. 21:50:27
+
+SCRIPT       : Module: GameLib; loaded 18x files; 26x classes; used 39/2097 kB (1%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,C
+SCRIPT       : Registered 349 temporary action enum(s), UAN==349
+SCRIPT       : Module: Game; loaded 521x files; 1604x classes; used 4275/33554 kB (12%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSI
+SCRIPT       : ... Backlit Effects Enabled
+SCRIPT       : VPPNotificationManager()
+SCRIPT       : [VPPAT] Internal VPPNotifications module loaded!
+SCRIPT       : [DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.
+SCRIPT       : Module: World; loaded 2247x files; 5867x classes; used 9519/33554 kB (28%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRES
+ SCRIPT       : Module: Mission; loaded 293x files; 593x classes; used 3996/33554 kB (11%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRE
+ SCRIPT    (W): @"$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c,54": Possible variable name conflict 'm_player'
+ SCRIPT       : Module: $CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c; loaded 1x files; 1x classes; used 16/1048 kB (1%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_Comm
+ SCRIPT       : [SERVER :: Vanilla++ AdminTools Plugins Registering]
+ SCRIPT       : [MissionServer] OnInit - Server
+ SCRIPT       : [MissionServer] OnMissionStart - Server
+ SCRIPT       : string dirtyName = 'TESTINGSERVER'
+SCRIPT       : m_LoginTimeMs: 16200
+ SCRIPT       : ---- PlayerBase OnStoreLoad SUCCESS ----
+ SCRIPT       : [VPPAT] Player "rafaelglima79" (steamId=76561199445097358) connected to server!
+ SCRIPT       : [PlayerListManager] AddReceiver ► added: PlayerIdentity<0x0000020DC23FDFA0>
+SCRIPT       : [DUMMY_DEBUG] SUCESSO: Dummy criado na posicao: <2677.841309, 363.394104, 6759.288574>
+SCRIPT       : DATA_LOG | 764654 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 0.722805 | 3.00025 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 1 | camera | none | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 765404 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5386 | 3.45045 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 766405 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5705 | 3.44736 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+ SCRIPT       : [Logout]: New player aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= with logout time 15
+ SCRIPT       : Player "rafaelglima79" (steamid=76561199445097358) initiated disconnect process...
+SCRIPT       : DATA_LOG | 767411 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5204 | 3.45226 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : [Logout]: Player aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= finished
+SCRIPT       : [PlayerListManager] SyncEntryToReceivers ► uid: aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= isn't in the players list! sending a remove.
+SCRIPT       : PlayerDisconnected -> PlayerListManager.RemoveEntry ► aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0=
+ SCRIPT       : ---- PlayerBase OnStoreLoad SUCCESS ----
+ SCRIPT       : [VPPAT] Player "rafaelglima79" (steamId=76561199445097358) connected to server!
+ SCRIPT       : [PlayerListManager] AddReceiver ► added: PlayerIdentity<0x0000020E8FFDC500>
+SCRIPT       : DATA_LOG | 802446 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5067 | 3.45204 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 803449 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5742 | 3.44784 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 804446 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6608 | 3.4401 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 805446 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.4994 | 3.4532 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 806447 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5865 | 3.44617 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 807459 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5182 | 3.45332 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 808452 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5424 | 3.44995 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 809454 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5499 | 3.44886 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 810453 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5365 | 3.45093 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 811454 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6817 | 3.43831 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 812455 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5061 | 3.45271 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 813457 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.592 | 3.44582 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 814458 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5286 | 3.45243 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 815460 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5356 | 3.45097 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 816458 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5923 | 3.44579 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 817459 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5027 | 3.45353 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 818462 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.693 | 3.43745 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 819466 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5282 | 3.45096 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 820469 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5809 | 3.44679 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 821469 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5358 | 3.45143 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 822474 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5234 | 3.45232 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 823473 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6092 | 3.4445 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 824468 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.4736 | 3.45548 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 825468 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6907 | 3.4377 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 826470 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5614 | 3.44843 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 827477 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5622 | 3.44823 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 828475 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5518 | 3.44991 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 829475 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5157 | 3.45311 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 830473 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6033 | 3.44482 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 831473 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.4676 | 3.45557 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 832474 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.6633 | 3.44012 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : DATA_LOG | 833476 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5879 | 3.4464 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.350
+SCRIPT       : DATA_LOG | 834478 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5389 | 3.45004 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+ SCRIPT       : [Logout]: New player aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= with logout time 15
+ SCRIPT       : Player "rafaelglima79" (steamid=76561199445097358) initiated disconnect process...
+SCRIPT       : DATA_LOG | 835477 | aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= | 2676.79 | 363.356 | 6756.48 | 0.350176 | 0.936684 | 0 | SVD_Wooden | 1 | 28.5633 | 3.44856 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | camera | target | 0.350176 | 0 | 0.936684 | 0.35
+SCRIPT       : [Logout]: Player aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= finished
+SCRIPT       : [PlayerListManager] SyncEntryToReceivers ► uid: aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0= isn't in the players list! sending a remove.
+SCRIPT       : PlayerDisconnected -> PlayerListManager.RemoveEntry ► aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0=
+ SCRIPT       : [MissionServer] OnMissionFinish - Server
+ SCRIPT       : ~DayZGame()

@@ -6,8 +6,8 @@ import argparse
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-09-04_23-42-20.log'
-FILE_OUT = 'datasets/partida_1acao_hacker_raw.csv'
+FILE_IN = r'log_profiles/script_2026-09-24_22-06-18.log'
+FILE_OUT = 'datasets/partida_2players1hacker.csv'
 INTERVALO_TEMPO = 1.0 
 ANGULO_MIRA_DEG = 5.0
 ANGULO_PRECISAO_ESP_DEG = 1.0
@@ -71,6 +71,37 @@ FEATURES_JANELA_IA_RECOMENDADAS = [
 
 # ==========================================
 
+def normalizar_arma(valor):
+    """Padroniza o nome da arma somente para auditoria humana."""
+    if pd.isna(valor):
+        return 'sem_arma'
+    texto = str(valor).strip()
+    if not texto or texto.lower() in {'none', 'nan', 'null', '0'}:
+        return 'sem_arma'
+    return texto
+
+
+def arma_predominante(serie):
+    """Retorna a arma mais frequente na janela de 10 segundos."""
+    armas = serie.map(normalizar_arma)
+    contagens = armas.value_counts(sort=True)
+    if contagens.empty:
+        return 'sem_arma'
+    return str(contagens.index[0])
+
+
+def armas_observadas(serie):
+    """Lista as armas distintas da janela na ordem em que apareceram."""
+    vistas = []
+    for valor in serie:
+        arma = normalizar_arma(valor)
+        if arma not in vistas:
+            vistas.append(arma)
+    return ';'.join(vistas) if vistas else 'sem_arma'
+
+
+# ==========================================
+
 def preprocess_log(input_path, output_path, dt):
     print(f"Lendo log: {input_path}...")
     data = []
@@ -130,6 +161,9 @@ def preprocess_log(input_path, output_path, dt):
     if df.empty:
         print("Nenhum jogador com identidade válida foi encontrado no log.")
         return
+    # A arma é um metadado de auditoria. Ela ajuda a localizar os intervalos do
+    # experimento, mas não integra as listas de features usadas pela IA.
+    df['arma'] = df['arma'].map(normalizar_arma)
     df = df.sort_values(['player_id', 'tempo'], kind='stable').reset_index(drop=True)
     df['jogador_sessao'] = pd.factorize(df['player_id'], sort=False)[0] + 1
     df['tempo_run_s'] = (
@@ -519,9 +553,11 @@ def preprocess_log(input_path, output_path, dt):
     df['wallhack_suspeito'] = df['esp_oculto_longa_distancia']
 
     # --- 4. EXPORTAÇÃO: FEATURES NEUTRAS + LEITURA HUMANA ---
-    # As três primeiras colunas são metadados para localizar a faixa da run e não
-    # devem ser usadas como features pelo modelo.
-    metadados = ['jogador_sessao', 'tempo_run_s', 'janela_analise_10s']
+    # Estas colunas servem para localizar a faixa da run e conferir o equipamento.
+    # A arma é apenas metadado de auditoria e não deve ser usada como feature.
+    metadados = [
+        'jogador_sessao', 'tempo_run_s', 'janela_analise_10s', 'arma'
+    ]
     colunas_analise = [
         'tracking_oculto_suspeito', 'mira_armada_oculta_suspeita',
         'wallhack_suspeito', 'alerta_speedhack', 'alerta_aimbot',
@@ -549,6 +585,7 @@ def preprocess_log(input_path, output_path, dt):
     )
     df['_angulo_valido'] = df['travado_em_player'].where(df['alvo_encontrado'] == 1)
     df['_distancia_valida'] = df['distancia_alvo'].where(df['alvo_encontrado'] == 1)
+    df['_arma_empunhada'] = (df['arma'] != 'sem_arma').astype(float)
 
     janelas = df.groupby(
         ['jogador_sessao', 'janela_analise_10s'], sort=False
@@ -556,6 +593,9 @@ def preprocess_log(input_path, output_path, dt):
         inicio_janela_s=('tempo_run_s', 'min'),
         fim_janela_s=('tempo_run_s', 'max'),
         amostras=('tempo_run_s', 'size'),
+        arma_predominante=('arma', arma_predominante),
+        armas_observadas=('arma', armas_observadas),
+        taxa_arma_empunhada=('_arma_empunhada', 'mean'),
         vel_posicao_media=('vel_posicao', 'mean'),
         vel_posicao_max=('vel_posicao', 'max'),
         aceleracao_media=('acel_linear', 'mean'),
@@ -613,7 +653,8 @@ def preprocess_log(input_path, output_path, dt):
 
     metadados_janela = [
         'jogador_sessao', 'janela_analise_10s', 'inicio_janela_s',
-        'fim_janela_s', 'amostras'
+        'fim_janela_s', 'amostras', 'arma_predominante',
+        'armas_observadas', 'taxa_arma_empunhada'
     ]
     analise_janela = [
         'pontos_evento_total', 'pontos_suspeita_60s_max',

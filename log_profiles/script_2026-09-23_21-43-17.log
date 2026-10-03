@@ -1,0 +1,21 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\script_2026-09-23_21-43-17.log started at 23.09. 21:43:20
+
+SCRIPT       : Module: GameLib; loaded 18x files; 26x classes; used 39/2097 kB (1%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,C
+SCRIPT       : Registered 349 temporary action enum(s), UAN==349
+SCRIPT       : Module: Game; loaded 521x files; 1604x classes; used 4275/33554 kB (12%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSI
+SCRIPT       : ... Backlit Effects Enabled
+SCRIPT       : VPPNotificationManager()
+SCRIPT       : [VPPAT] Internal VPPNotifications module loaded!
+SCRIPT       : [DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.
+SCRIPT       : Module: World; loaded 2247x files; 5867x classes; used 9518/33554 kB (28%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRES
+ SCRIPT       : Module: Mission; loaded 293x files; 593x classes; used 3996/33554 kB (11%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRE
+ SCRIPT    (W): @"$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c,54": Possible variable name conflict 'm_player'
+ SCRIPT       : Module: $CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c; loaded 1x files; 1x classes; used 16/1048 kB (1%) of static memory; defines: "DAYZ_1_29,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,JM_Comm
+ SCRIPT       : [SERVER :: Vanilla++ AdminTools Plugins Registering]
+ SCRIPT       : [MissionServer] OnInit - Server
+ SCRIPT       : [MissionServer] OnMissionStart - Server
+ SCRIPT       : string dirtyName = 'TESTINGSERVER'
+SCRIPT       : m_LoginTimeMs: 16200
+ SCRIPT       : [MissionServer] OnMissionFinish - Server
+ SCRIPT       : ~DayZGame()

@@ -1,0 +1,25 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-09-24_22-31-32.log started at 24.09. 22:48:54
+
+
+
+------------------------------------
+ACERRAFA, 24.09 2026 22:48:54
+Virtual Machine Exception
+
+Reason: NULL pointer to instance. Variable 'PlayerBase' during call 'PlayerBase.GetInventory'
+
+Class:      'CustomMission'
+Function: 'EquipCharacter'
+Stack trace:
+scripts/5_Mission/mission\missionserver.c:519 Function EquipCharacter
+scripts/5_Mission/mission\missionserver.c:580 Function OnClientNewEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:146 Function OnClientNewEvent
+scripts/5_Mission/mission\missionserver.c:319 Function OnEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:10 Function OnEvent
+VPPAdminTools/5_Mission/vppadmintools\missionserver.c:67 Function OnEvent
+scripts/3_Game/dayzgame.c:1760 Function OnEvent
+JM/CF/Scripts/3_Game/communityframework\game\dayzgame.c:120 Function OnEvent
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

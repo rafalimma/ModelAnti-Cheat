@@ -1,0 +1,5 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+par1plyr2.csv,partida_2players1hacker,1,0,470,normal,jogador_a
+par1plyr2.csv,partida_2players1hacker,1,480,560,esp,jogador_a
+par1plyr2.csv,partida_2players1hacker,1,580,625,normal,jogador_a
+par1plyr2.csv,partida_2players1hacker,2,0,627,normal,jogador_b

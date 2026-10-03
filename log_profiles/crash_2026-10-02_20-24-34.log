@@ -1,0 +1,41 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-10-02_20-24-34.log started at 02.10. 20:56:31
+
+
+
+------------------------------------
+ACERRAFA, 02.10 2026 20:56:31
+Virtual Machine Exception
+
+Reason: [EffectSound::Effect] :: [WARNING] :: Created Effect on server.
+
+Class:      'EffectSound'
+Function: 'Effect'
+Stack trace:
+scripts/3_Game/effect.c:76 Function Effect
+scripts/4_World/entities\itembase\tentbase\largetentbackpack.c:7 Function LargeTentBackPack
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:179 Function CreateEntity
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\itemmanager\itemmanager.c:380 Function SpawnItem
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 02.10 2026 21:01:25
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'EffectSound'
+Function: 'SetEnableEventFrame'
+Stack trace:
+scripts/3_Game/effect.c:290 Function SetEnableEventFrame
+scripts/3_Game/effect.c:97 Function ~Effect
+scripts/3_Game/effectmanager.c:278 Function DestroyEffect
+scripts/4_World/entities\itembase\tentbase\largetentbackpack.c:12 Function ~LargeTentBackPack
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
