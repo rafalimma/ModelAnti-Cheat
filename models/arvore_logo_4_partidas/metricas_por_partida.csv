@@ -1,0 +1,5 @@
+amostras_teste,normais_teste,hackers_teste,accuracy,balanced_accuracy,precision_hacker,recall_hacker,f1_hacker,false_positive_rate,tn,fp,fn,tp,roc_auc,rodada,grupo_teste,grupos_treino,amostras_treino,profundidade_arvore,folhas_arvore
+186,180,6,0.989247311827957,0.913888888888889,0.8333333333333334,0.8333333333333334,0.8333333333333334,0.005555555555555556,179,1,1,5,0.913888888888889,1,par2plyr2h,par3plyr3n;par3plyr3r;partida_2players1hacker,1330,1,2
+505,505,0,0.994059405940594,,0.0,,,0.005940594059405941,502,3,0,0,,2,par3plyr3n,par2plyr2h;par3plyr3r;partida_2players1hacker,1011,1,2
+709,705,4,0.9844851904090268,0.9921985815602836,0.26666666666666666,1.0,0.42105263157894735,0.015602836879432624,694,11,0,4,0.9921985815602836,3,par3plyr3r,par2plyr2h;par3plyr3n;partida_2players1hacker,807,2,3
+116,108,8,1.0,1.0,1.0,1.0,1.0,0.0,108,0,0,8,1.0,4,partida_2players1hacker,par2plyr2h;par3plyr3n;par3plyr3r,1400,2,3

@@ -1,0 +1,28 @@
+{
+  "amostras_teste": 116,
+  "normais_teste": 108,
+  "hackers_teste": 8,
+  "accuracy": 1.0,
+  "balanced_accuracy": 1.0,
+  "precision_hacker": 1.0,
+  "recall_hacker": 1.0,
+  "f1_hacker": 1.0,
+  "false_positive_rate": 0.0,
+  "tn": 108,
+  "fp": 0,
+  "fn": 0,
+  "tp": 8,
+  "matriz_confusao": {
+    "tn": 108,
+    "fp": 0,
+    "fn": 0,
+    "tp": 8
+  },
+  "roc_auc": 1.0,
+  "rodada": 4,
+  "grupo_teste": "partida_2players1hacker",
+  "grupos_treino": "par2plyr2h;par3plyr3n;par3plyr3r",
+  "amostras_treino": 1400,
+  "profundidade_arvore": 3,
+  "folhas_arvore": 5
+}

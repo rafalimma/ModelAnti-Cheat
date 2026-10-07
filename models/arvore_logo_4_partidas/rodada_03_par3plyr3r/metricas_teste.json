@@ -1,0 +1,28 @@
+{
+  "amostras_teste": 709,
+  "normais_teste": 705,
+  "hackers_teste": 4,
+  "accuracy": 0.9844851904090268,
+  "balanced_accuracy": 0.9921985815602836,
+  "precision_hacker": 0.26666666666666666,
+  "recall_hacker": 1.0,
+  "f1_hacker": 0.42105263157894735,
+  "false_positive_rate": 0.015602836879432624,
+  "tn": 694,
+  "fp": 11,
+  "fn": 0,
+  "tp": 4,
+  "matriz_confusao": {
+    "tn": 694,
+    "fp": 11,
+    "fn": 0,
+    "tp": 4
+  },
+  "roc_auc": 0.9921985815602836,
+  "rodada": 3,
+  "grupo_teste": "par3plyr3r",
+  "grupos_treino": "par2plyr2h;par3plyr3n;partida_2players1hacker",
+  "amostras_treino": 807,
+  "profundidade_arvore": 2,
+  "folhas_arvore": 3
+}

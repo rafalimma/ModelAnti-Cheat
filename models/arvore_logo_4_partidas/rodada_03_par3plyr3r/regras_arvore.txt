@@ -1,0 +1,7 @@
+|--- duracao_mirando_oculto_max <= 1.0005
+|   |--- aceleracao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- aceleracao_max >  0.0000
+|   |   |--- class: 0
+|--- duracao_mirando_oculto_max >  1.0005
+|   |--- class: 1

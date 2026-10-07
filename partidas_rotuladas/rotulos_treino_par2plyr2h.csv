@@ -1,0 +1,7 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+par2plyr2h.csv,par2plyr2h,1,0,1245,normal,jogador_par2_1
+par2plyr2h.csv,par2plyr2h,2,0,669,normal,jogador_par2_2
+par2plyr2h.csv,par2plyr2h,2,670,710,esp,jogador_par2_2
+par2plyr2h.csv,par2plyr2h,2,711,769,normal,jogador_par2_2
+par2plyr2h.csv,par2plyr2h,2,770,790,esp,jogador_par2_2
+par2plyr2h.csv,par2plyr2h,2,791,843,normal,jogador_par2_2

@@ -1,0 +1,60 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-10-02_22-02-45.log started at 02.10. 22:04:26
+
+
+
+------------------------------------
+ACERRAFA, 02.10 2026 22:04:26
+Virtual Machine Exception
+
+Reason: [EffectSound::Effect] :: [WARNING] :: Created Effect on server.
+
+Class:      'EffectSound'
+Function: 'Effect'
+Stack trace:
+scripts/3_Game/effect.c:76 Function Effect
+scripts/4_World/entities\itembase\tentbase\largetentbackpack.c:7 Function LargeTentBackPack
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c:6 Function main
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 02.10 2026 22:20:39
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'EffectSound'
+Function: 'SetEnableEventFrame'
+Stack trace:
+scripts/3_Game/effect.c:290 Function SetEnableEventFrame
+scripts/3_Game/effect.c:97 Function ~Effect
+scripts/3_Game/effectmanager.c:278 Function DestroyEffect
+scripts/4_World/entities\itembase\tentbase\largetentbackpack.c:12 Function ~LargeTentBackPack
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 02.10 2026 22:29:08
+Virtual Machine Exception
+
+Reason: NULL pointer to instance. Variable 'PlayerBase' during call 'PlayerBase.GetInventory'
+
+Class:      'CustomMission'
+Function: 'EquipCharacter'
+Stack trace:
+scripts/5_Mission/mission\missionserver.c:519 Function EquipCharacter
+scripts/5_Mission/mission\missionserver.c:580 Function OnClientNewEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:146 Function OnClientNewEvent
+scripts/5_Mission/mission\missionserver.c:319 Function OnEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:10 Function OnEvent
+VPPAdminTools/5_Mission/vppadmintools\missionserver.c:67 Function OnEvent
+scripts/3_Game/dayzgame.c:1760 Function OnEvent
+JM/CF/Scripts/3_Game/communityframework\game\dayzgame.c:120 Function OnEvent
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

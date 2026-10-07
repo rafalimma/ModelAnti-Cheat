@@ -1,0 +1,16 @@
+|--- duracao_mirando_oculto_max <= 1.5205
+|   |--- aceleracao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- aceleracao_max >  0.0000
+|   |   |--- class: 0
+|--- duracao_mirando_oculto_max >  1.5205
+|   |--- distancia_alvo_media <= 247.0048
+|   |   |--- class: 0
+|   |--- distancia_alvo_media >  247.0048
+|   |   |--- distancia_alvo_media <= 413.8154
+|   |   |   |--- class: 1
+|   |   |--- distancia_alvo_media >  413.8154
+|   |   |   |--- entropia_media <= 0.0606
+|   |   |   |   |--- class: 1
+|   |   |   |--- entropia_media >  0.0606
+|   |   |   |   |--- class: 1

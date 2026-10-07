@@ -1,0 +1,13 @@
+|--- duracao_mirando_oculto_max <= 1.5035
+|   |--- aceleracao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- aceleracao_max >  0.0000
+|   |   |--- class: 0
+|--- duracao_mirando_oculto_max >  1.5035
+|   |--- eficiencia_trajeto_media <= 0.7685
+|   |   |--- class: 1
+|   |--- eficiencia_trajeto_media >  0.7685
+|   |   |--- variacao_camera_media <= 0.0801
+|   |   |   |--- class: 1
+|   |   |--- variacao_camera_media >  0.0801
+|   |   |   |--- class: 1

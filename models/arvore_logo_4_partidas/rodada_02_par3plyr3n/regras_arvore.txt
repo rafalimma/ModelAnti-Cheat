@@ -1,0 +1,4 @@
+|--- duracao_mirando_oculto_max <= 1.5205
+|   |--- class: 0
+|--- duracao_mirando_oculto_max >  1.5205
+|   |--- class: 1

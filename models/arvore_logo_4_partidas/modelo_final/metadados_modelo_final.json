@@ -1,0 +1,39 @@
+{
+  "tipo": "modelo_final_treinado_com_todas_as_partidas",
+  "nao_e_avaliacao_fora_da_amostra": true,
+  "partidas_treinamento": [
+    "par2plyr2h",
+    "par3plyr3n",
+    "par3plyr3r",
+    "partida_2players1hacker"
+  ],
+  "amostras_treinamento": 1516,
+  "features": [
+    "vel_posicao_media",
+    "vel_posicao_max",
+    "aceleracao_media",
+    "aceleracao_max",
+    "vel_rotacao_media",
+    "vel_rotacao_max",
+    "vel_rotacao_std",
+    "jitter_medio",
+    "entropia_media",
+    "eficiencia_trajeto_media",
+    "variacao_camera_media",
+    "angulo_alvo_medio",
+    "angulo_alvo_min",
+    "distancia_alvo_media",
+    "distancia_alvo_max",
+    "taxa_alvo_encontrado",
+    "taxa_alvo_na_mira",
+    "taxa_visao_direta",
+    "taxa_alvo_oculto",
+    "taxa_mirando_alvo",
+    "taxa_mira_oculta",
+    "duracao_rastreando_oculto_max",
+    "duracao_mirando_oculto_max"
+  ],
+  "arma_usada_como_feature": false,
+  "profundidade_arvore": 2,
+  "folhas_arvore": 3
+}

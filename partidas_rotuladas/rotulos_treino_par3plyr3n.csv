@@ -1,0 +1,8 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,1,0.000,1884.197,normal,jogador_par3n_1
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,2,0.000,219.444,normal,jogador_par3n_2
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,2,230.446,429.998,normal,jogador_par3n_2
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,2,440.240,1709.761,normal,jogador_par3n_2
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,3,0.000,59.842,normal,jogador_par3n_3
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,3,70.842,909.420,normal,jogador_par3n_3
+../datasets/par3plyr3n_janelas.csv,par3plyr3n,3,920.432,1485.160,normal,jogador_par3n_3
