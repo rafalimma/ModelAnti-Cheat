@@ -233,63 +233,190 @@ def media_desvio(metricas_df: pd.DataFrame, coluna: str) -> dict[str, object]:
 
 
 def executar(args: argparse.Namespace) -> None:
+    DISTANCIA_MINIMA_ESP = 300.0
+
     manifesto_path = Path(args.manifesto).resolve()
     saida = Path(args.saida).resolve()
     saida.mkdir(parents=True, exist_ok=True)
+
     dados, features = preparar_dados(manifesto_path)
 
     if args.agrupar_por == "jogador_global":
         if (dados["jogador_global"].astype(str).str.strip() == "").any():
-            raise ValueError("Preencha jogador_global para agrupar por jogador.")
+            raise ValueError(
+                "Preencha jogador_global para agrupar por jogador."
+            )
         grupos_serie = dados["jogador_global"].astype(str)
     else:
         grupos_serie = dados["partida_id"].astype(str)
 
     grupos = sorted(grupos_serie.unique().tolist())
+
     if len(grupos) < 3:
-        raise ValueError("A validacao LOGO exige pelo menos 3 grupos independentes.")
+        raise ValueError(
+            "A validacao LOGO exige pelo menos 3 grupos independentes."
+        )
+
+    # Verifica as colunas necessárias para a porta de ESP.
+    colunas_porta = {
+        "distancia_alvo_media",
+        "taxa_alvo_oculto",
+    }
+
+    faltantes_porta = sorted(colunas_porta - set(dados.columns))
+
+    if faltantes_porta:
+        raise ValueError(
+            "Colunas ausentes para a porta deterministica de ESP: "
+            f"{faltantes_porta}"
+        )
 
     linhas_metricas: list[dict[str, object]] = []
     previsoes_fora_amostra: list[pd.DataFrame] = []
     importancias: list[pd.DataFrame] = []
 
-    print(f"\n=== VALIDACAO LEAVE-ONE-GROUP-OUT: {len(grupos)} RODADAS ===")
+    print(
+        f"\n=== VALIDACAO LEAVE-ONE-GROUP-OUT: "
+        f"{len(grupos)} RODADAS ==="
+    )
+
     print(f"Grupos: {grupos}")
-    print(f"Features comportamentais: {len(features)} (arma excluida)")
+    print(
+        f"Features comportamentais: {len(features)} "
+        "(arma excluida)"
+    )
+
+    print("\nPorta deterministica de ESP:")
+    print("  alvo oculto: obrigatorio")
+    print(f"  distancia: > {DISTANCIA_MINIMA_ESP:.1f} metros")
+    print("  exatamente 300 metros fica fora do criterio")
 
     for numero, grupo_teste in enumerate(grupos, start=1):
         mascara_teste = grupos_serie == grupo_teste
+
         treino = dados.loc[~mascara_teste].copy()
         teste = dados.loc[mascara_teste].copy()
+
         y_treino = treino["rotulo_real"].astype(int)
         y_teste = teste["rotulo_real"].astype(int)
 
         if y_treino.nunique() < 2:
             raise ValueError(
-                f"Rodada {grupo_teste}: o treino ficou sem as duas classes. "
-                "Sao necessarias acoes hacker em mais de uma partida."
+                f"Rodada {grupo_teste}: o treino ficou sem as "
+                "duas classes. Sao necessarias acoes hacker em "
+                "mais de uma partida."
             )
 
         modelo = criar_modelo(args, len(treino))
-        modelo.fit(treino[features], y_treino)
-        probabilidades = modelo.predict_proba(teste[features])[:, 1]
-        previsoes = (probabilidades >= args.threshold).astype(int)
-        metricas = dividir_metricas(y_teste, previsoes, probabilidades)
-        arvore: DecisionTreeClassifier = modelo.named_steps["arvore"]
-        grupos_treino = sorted(grupos_serie.loc[~mascara_teste].unique().tolist())
+
+        modelo.fit(
+            treino[features],
+            y_treino,
+        )
+
+        # ---------------------------------------------------------
+        # PORTA DETERMINÍSTICA DE ESP
+        #
+        # Somente uma janela com alvo oculto e distância superior
+        # a 300 metros pode ser enviada para o júri da árvore.
+        # ---------------------------------------------------------
+
+        distancia = pd.to_numeric(
+            teste["distancia_alvo_media"],
+            errors="coerce",
+        )
+
+        taxa_oculta = pd.to_numeric(
+            teste["taxa_alvo_oculto"],
+            errors="coerce",
+        )
+
+        elegiveis_esp = (
+            distancia.gt(DISTANCIA_MINIMA_ESP)
+            & taxa_oculta.gt(0.0)
+        )
+
+        # Por padrão, tudo que não passar pela porta é normal para ESP.
+        probabilidades = np.zeros(
+            len(teste),
+            dtype=float,
+        )
+
+        previsoes = np.zeros(
+            len(teste),
+            dtype=int,
+        )
+
+        # A árvore só é consultada para as janelas elegíveis.
+        if elegiveis_esp.any():
+            X_elegivel = teste.loc[
+                elegiveis_esp,
+                features,
+            ]
+
+            probabilidades_elegiveis = modelo.predict_proba(
+                X_elegivel
+            )[:, 1]
+
+            indices_elegiveis = elegiveis_esp.to_numpy()
+
+            probabilidades[indices_elegiveis] = (
+                probabilidades_elegiveis
+            )
+
+            previsoes[indices_elegiveis] = (
+                probabilidades_elegiveis >= args.threshold
+            ).astype(int)
+
+        metricas = dividir_metricas(
+            y_teste,
+            previsoes,
+            probabilidades,
+        )
+
+        arvore: DecisionTreeClassifier = (
+            modelo.named_steps["arvore"]
+        )
+
+        grupos_treino = sorted(
+            grupos_serie.loc[
+                ~mascara_teste
+            ].unique().tolist()
+        )
+
         metricas.update(
             {
                 "rodada": numero,
                 "grupo_teste": grupo_teste,
                 "grupos_treino": ";".join(grupos_treino),
                 "amostras_treino": int(len(treino)),
-                "profundidade_arvore": int(arvore.get_depth()),
-                "folhas_arvore": int(arvore.get_n_leaves()),
+                "profundidade_arvore": int(
+                    arvore.get_depth()
+                ),
+                "folhas_arvore": int(
+                    arvore.get_n_leaves()
+                ),
+
+                # Auditoria da porta de ESP
+                "porta_esp_ativa": True,
+                "distancia_minima_esp_m":
+                    DISTANCIA_MINIMA_ESP,
+                "janelas_enviadas_ao_juri": int(
+                    elegiveis_esp.sum()
+                ),
+                "janelas_fora_criterio_esp": int(
+                    (~elegiveis_esp).sum()
+                ),
             }
         )
+
         linhas_metricas.append(metricas)
 
-        pasta_rodada = saida / f"rodada_{numero:02d}_{grupo_teste}"
+        pasta_rodada = (
+            saida
+            / f"rodada_{numero:02d}_{grupo_teste}"
+        )
+
         base.salvar_resultados(
             pasta_rodada,
             modelo,
@@ -301,46 +428,178 @@ def executar(args: argparse.Namespace) -> None:
             metricas,
             args.threshold,
         )
-        previsoes_fora_amostra.append(
-            montar_previsoes_auditoria(
-                teste, y_teste, probabilidades, previsoes, grupo_teste
+
+        # Monta o CSV de auditoria.
+        auditoria = montar_previsoes_auditoria(
+            teste,
+            y_teste,
+            probabilidades,
+            previsoes,
+            grupo_teste,
+        )
+
+        auditoria["distancia_alvo_media"] = (
+            distancia.to_numpy()
+        )
+
+        auditoria["taxa_alvo_oculto"] = (
+            taxa_oculta.to_numpy()
+        )
+
+        auditoria["elegivel_porta_esp"] = (
+            elegiveis_esp.to_numpy()
+        )
+
+        auditoria["distancia_minima_esp"] = (
+            DISTANCIA_MINIMA_ESP
+        )
+
+        auditoria["decisao_porta_esp"] = (
+            "enviado_ao_juri"
+        )
+
+        # Primeiro identifica ausência de alvo oculto.
+        mascara_sem_oclusao = (
+            taxa_oculta.le(0.0)
+            | taxa_oculta.isna()
+        )
+
+        auditoria.loc[
+            mascara_sem_oclusao.to_numpy(),
+            "decisao_porta_esp",
+        ] = "fora_criterio_sem_alvo_oculto"
+
+        # Depois identifica alvo oculto que não passou de 300 m.
+        mascara_distancia = (
+            taxa_oculta.gt(0.0)
+            & (
+                distancia.le(DISTANCIA_MINIMA_ESP)
+                | distancia.isna()
             )
         )
+
+        auditoria.loc[
+            mascara_distancia.to_numpy(),
+            "decisao_porta_esp",
+        ] = "fora_criterio_distancia"
+
+        auditoria["resultado_esp"] = "normal"
+
+        auditoria.loc[
+            ~auditoria["elegivel_porta_esp"],
+            "resultado_esp",
+        ] = "fora_criterio_esp"
+
+        auditoria.loc[
+            (
+                auditoria["elegivel_porta_esp"]
+                & auditoria["previsao_modelo"].eq(1)
+            ),
+            "resultado_esp",
+        ] = "suspeito_revisao"
+
+        # Substitui a previsão simples da rodada pela versão auditável.
+        auditoria.to_csv(
+            pasta_rodada / "previsoes_teste.csv",
+            index=False,
+        )
+
+        previsoes_fora_amostra.append(auditoria)
+
         importancias.append(
             pd.DataFrame(
                 {
                     "rodada": numero,
                     "grupo_teste": grupo_teste,
                     "feature": features,
-                    "importancia": arvore.feature_importances_,
+                    "importancia":
+                        arvore.feature_importances_,
                 }
             )
         )
+
         print(
-            f"[{numero}/{len(grupos)}] teste={grupo_teste}: "
-            f"TN={metricas['tn']} FP={metricas['fp']} "
-            f"FN={metricas['fn']} TP={metricas['tp']}"
+            f"[{numero}/{len(grupos)}] "
+            f"teste={grupo_teste}: "
+            f"TN={metricas['tn']} "
+            f"FP={metricas['fp']} "
+            f"FN={metricas['fn']} "
+            f"TP={metricas['tp']} | "
+            f"juri={int(elegiveis_esp.sum())}/"
+            f"{len(teste)}"
         )
 
+    # -------------------------------------------------------------
+    # RESULTADOS CONSOLIDADOS
+    # -------------------------------------------------------------
+
     metricas_df = pd.DataFrame(linhas_metricas)
-    metricas_df.drop(columns=["matriz_confusao"]).to_csv(
-        saida / "metricas_por_partida.csv", index=False
-    )
-    previsoes_df = pd.concat(previsoes_fora_amostra, ignore_index=True)
-    previsoes_df.to_csv(saida / "previsoes_fora_da_amostra.csv", index=False)
-    pd.concat(importancias, ignore_index=True).to_csv(
-        saida / "importancia_features_por_rodada.csv", index=False
+
+    metricas_df.drop(
+        columns=["matriz_confusao"]
+    ).to_csv(
+        saida / "metricas_por_partida.csv",
+        index=False,
     )
 
-    y_total = previsoes_df["rotulo_real"].astype(int)
-    pred_total = previsoes_df["previsao_modelo"].astype(int).to_numpy()
-    prob_total = previsoes_df["probabilidade_hacker"].astype(float).to_numpy()
-    acumuladas = dividir_metricas(y_total, pred_total, prob_total)
+    previsoes_df = pd.concat(
+        previsoes_fora_amostra,
+        ignore_index=True,
+    )
+
+    previsoes_df.to_csv(
+        saida / "previsoes_fora_da_amostra.csv",
+        index=False,
+    )
+
+    pd.concat(
+        importancias,
+        ignore_index=True,
+    ).to_csv(
+        saida / "importancia_features_por_rodada.csv",
+        index=False,
+    )
+
+    y_total = previsoes_df[
+        "rotulo_real"
+    ].astype(int)
+
+    pred_total = previsoes_df[
+        "previsao_modelo"
+    ].astype(int).to_numpy()
+
+    prob_total = previsoes_df[
+        "probabilidade_hacker"
+    ].astype(float).to_numpy()
+
+    acumuladas = dividir_metricas(
+        y_total,
+        pred_total,
+        prob_total,
+    )
+
     pd.DataFrame(
-        [[acumuladas["tn"], acumuladas["fp"]], [acumuladas["fn"], acumuladas["tp"]]],
-        index=["real_normal", "real_hacker"],
-        columns=["previsto_normal", "previsto_hacker"],
-    ).to_csv(saida / "matriz_confusao_acumulada.csv")
+        [
+            [
+                acumuladas["tn"],
+                acumuladas["fp"],
+            ],
+            [
+                acumuladas["fn"],
+                acumuladas["tp"],
+            ],
+        ],
+        index=[
+            "real_normal",
+            "real_hacker",
+        ],
+        columns=[
+            "previsto_normal",
+            "previsto_hacker",
+        ],
+    ).to_csv(
+        saida / "matriz_confusao_acumulada.csv"
+    )
 
     colunas_resumo = [
         "accuracy",
@@ -351,6 +610,7 @@ def executar(args: argparse.Namespace) -> None:
         "false_positive_rate",
         "roc_auc",
     ]
+
     consolidado = {
         "metodo": "Leave-One-Group-Out",
         "grupo_validacao": args.agrupar_por,
@@ -359,21 +619,74 @@ def executar(args: argparse.Namespace) -> None:
         "amostras_total": int(len(dados)),
         "features": features,
         "arma_usada_como_feature": False,
-        "metricas_fora_da_amostra_acumuladas": acumuladas,
-        "media_e_desvio_entre_rodadas": {
-            coluna: media_desvio(metricas_df, coluna) for coluna in colunas_resumo
+
+        "porta_esp": {
+            "ativa": True,
+            "ordem": "antes_do_juri_IA",
+            "exige_alvo_oculto": True,
+            "distancia_minima_exclusiva_m":
+                DISTANCIA_MINIMA_ESP,
+            "condicao": (
+                "taxa_alvo_oculto > 0 e "
+                "distancia_alvo_media > 300"
+            ),
+            "janelas_enviadas_ao_juri": int(
+                previsoes_df[
+                    "elegivel_porta_esp"
+                ].sum()
+            ),
+            "janelas_fora_criterio_esp": int(
+                (
+                    ~previsoes_df[
+                        "elegivel_porta_esp"
+                    ]
+                ).sum()
+            ),
         },
+
+        "metricas_fora_da_amostra_acumuladas":
+            acumuladas,
+
+        "media_e_desvio_entre_rodadas": {
+            coluna: media_desvio(
+                metricas_df,
+                coluna,
+            )
+            for coluna in colunas_resumo
+        },
+
         "observacao": (
-            "Metricas ausentes em uma rodada significam que a partida de teste "
-            "nao possuia a classe necessaria para calcula-las."
+            "Metricas ausentes em uma rodada significam "
+            "que a partida de teste nao possuia a classe "
+            "necessaria para calcula-las."
         ),
     }
-    (saida / "metricas_consolidadas.json").write_text(
-        json.dumps(consolidado, indent=2, ensure_ascii=False), encoding="utf-8"
+
+    (
+        saida / "metricas_consolidadas.json"
+    ).write_text(
+        json.dumps(
+            consolidado,
+            indent=2,
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
     )
 
-    modelo_final = criar_modelo(args, len(dados))
-    modelo_final.fit(dados[features], dados["rotulo_real"].astype(int))
+    # -------------------------------------------------------------
+    # MODELO FINAL
+    # -------------------------------------------------------------
+
+    modelo_final = criar_modelo(
+        args,
+        len(dados),
+    )
+
+    modelo_final.fit(
+        dados[features],
+        dados["rotulo_real"].astype(int),
+    )
+
     salvar_modelo_final(
         saida / "modelo_final",
         modelo_final,
@@ -383,14 +696,57 @@ def executar(args: argparse.Namespace) -> None:
         len(dados),
     )
 
+    # Registra a porta junto ao pacote final.
+    pacote_path = (
+        saida
+        / "modelo_final"
+        / "modelo_arvore_decisao.joblib"
+    )
+
+    pacote = joblib.load(pacote_path)
+
+    pacote["porta_esp"] = {
+        "ativa": True,
+        "ordem": "antes_do_juri_IA",
+        "distancia_minima_exclusiva_m":
+            DISTANCIA_MINIMA_ESP,
+        "exige_alvo_oculto": True,
+        "coluna_distancia":
+            "distancia_alvo_media",
+        "coluna_oclusao":
+            "taxa_alvo_oculto",
+    }
+
+    joblib.dump(
+        pacote,
+        pacote_path,
+    )
+
     print("\n=== VALIDACAO CONCLUIDA ===")
+
     print(
         "Matriz acumulada: "
-        f"TN={acumuladas['tn']} FP={acumuladas['fp']} "
-        f"FN={acumuladas['fn']} TP={acumuladas['tp']}"
+        f"TN={acumuladas['tn']} "
+        f"FP={acumuladas['fp']} "
+        f"FN={acumuladas['fn']} "
+        f"TP={acumuladas['tp']}"
     )
-    print(f"F1 hacker acumulado: {acumuladas['f1_hacker']}")
-    print(f"Taxa de falso positivo acumulada: {acumuladas['false_positive_rate']}")
+
+    print(
+        f"F1 hacker acumulado: "
+        f"{acumuladas['f1_hacker']}"
+    )
+
+    print(
+        f"Taxa de falso positivo acumulada: "
+        f"{acumuladas['false_positive_rate']}"
+    )
+
+    print(
+        "Janelas enviadas ao juri: "
+        f"{int(previsoes_df['elegivel_porta_esp'].sum())}"
+    )
+
     print(f"Resultados: {saida}")
 
 

@@ -1,0 +1,7 @@
+|--- duracao_mirando_oculto_max <= 2.0375
+|   |--- class: 0
+|--- duracao_mirando_oculto_max >  2.0375
+|   |--- distancia_alvo_media <= 262.6790
+|   |   |--- class: 0
+|   |--- distancia_alvo_media >  262.6790
+|   |   |--- class: 1

@@ -1,0 +1,5 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+par4plyr2h_janelas.csv,par4plyr2h,1,0.000,1315.150,normal,jogador_par4_1
+par4plyr2h_janelas.csv,par4plyr2h,2,0.000,1329.999,normal,jogador_par4_2
+par4plyr2h_janelas.csv,par4plyr2h,2,1330.000,1349.999,esp,jogador_par4_2
+par4plyr2h_janelas.csv,par4plyr2h,2,1350.000,1414.126,normal,jogador_par4_2

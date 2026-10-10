@@ -1,0 +1,107 @@
+{
+  "metodo": "Leave-One-Group-Out",
+  "grupo_validacao": "partida_id",
+  "grupos": [
+    "par2plyr2h",
+    "par3plyr3n",
+    "par3plyr3r",
+    "partida_2players1hacker"
+  ],
+  "rodadas": 4,
+  "amostras_total": 1516,
+  "features": [
+    "vel_posicao_media",
+    "vel_posicao_max",
+    "aceleracao_media",
+    "aceleracao_max",
+    "vel_rotacao_media",
+    "vel_rotacao_max",
+    "vel_rotacao_std",
+    "jitter_medio",
+    "entropia_media",
+    "eficiencia_trajeto_media",
+    "variacao_camera_media",
+    "angulo_alvo_medio",
+    "angulo_alvo_min",
+    "distancia_alvo_media",
+    "distancia_alvo_max",
+    "taxa_alvo_encontrado",
+    "taxa_alvo_na_mira",
+    "taxa_visao_direta",
+    "taxa_alvo_oculto",
+    "taxa_mirando_alvo",
+    "taxa_mira_oculta",
+    "duracao_rastreando_oculto_max",
+    "duracao_mirando_oculto_max"
+  ],
+  "arma_usada_como_feature": false,
+  "porta_esp": {
+    "ativa": true,
+    "ordem": "antes_do_juri_IA",
+    "exige_alvo_oculto": true,
+    "distancia_minima_exclusiva_m": 300.0,
+    "condicao": "taxa_alvo_oculto > 0 e distancia_alvo_media > 300",
+    "janelas_enviadas_ao_juri": 129,
+    "janelas_fora_criterio_esp": 1387
+  },
+  "metricas_fora_da_amostra_acumuladas": {
+    "amostras_teste": 1516,
+    "normais_teste": 1498,
+    "hackers_teste": 18,
+    "accuracy": 0.9986807387862797,
+    "balanced_accuracy": 0.9718884438510607,
+    "precision_hacker": 0.9444444444444444,
+    "recall_hacker": 0.9444444444444444,
+    "f1_hacker": 0.9444444444444444,
+    "false_positive_rate": 0.0006675567423230974,
+    "tn": 1497,
+    "fp": 1,
+    "fn": 1,
+    "tp": 17,
+    "matriz_confusao": {
+      "tn": 1497,
+      "fp": 1,
+      "fn": 1,
+      "tp": 17
+    },
+    "roc_auc": 0.9718142708796914
+  },
+  "media_e_desvio_entre_rodadas": {
+    "accuracy": {
+      "media": 0.9973118279569892,
+      "desvio_padrao": 0.004656050557980849,
+      "rodadas_validas": 4
+    },
+    "balanced_accuracy": {
+      "media": 0.9712962962962962,
+      "desvio_padrao": 0.04059316706811658,
+      "rodadas_validas": 3
+    },
+    "precision_hacker": {
+      "media": 0.9444444444444445,
+      "desvio_padrao": 0.0785674201318386,
+      "rodadas_validas": 3
+    },
+    "recall_hacker": {
+      "media": 0.9444444444444445,
+      "desvio_padrao": 0.0785674201318386,
+      "rodadas_validas": 3
+    },
+    "f1_hacker": {
+      "media": 0.9444444444444445,
+      "desvio_padrao": 0.0785674201318386,
+      "rodadas_validas": 3
+    },
+    "false_positive_rate": {
+      "media": 0.001388888888888889,
+      "desvio_padrao": 0.0024056261216234406,
+      "rodadas_validas": 4
+    },
+    "roc_auc": {
+      "media": 0.9712962962962962,
+      "desvio_padrao": 0.04059316706811658,
+      "rodadas_validas": 3
+    }
+  },
+  "observacao": "Metricas ausentes em uma rodada significam que a partida de teste nao possuia a classe necessaria para calcula-las."
+}
