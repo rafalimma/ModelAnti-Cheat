@@ -6,8 +6,8 @@ import argparse
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-10-10_19-00-25.log'
-FILE_OUT = 'datasets/par7plyr2n.csv'
+FILE_IN = r'log_profiles/script_2026-10-10_20-00-09.log'
+FILE_OUT = 'datasets/par9plyr2n.csv'
 INTERVALO_TEMPO = 1.0 
 ANGULO_MIRA_DEG = 5.0
 ANGULO_PRECISAO_ESP_DEG = 1.0

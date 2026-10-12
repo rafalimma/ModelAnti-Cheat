@@ -1,0 +1,256 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-10-10_20-00-09.log started at 10.10. 20:18:10
+
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:10
+Virtual Machine Exception
+
+Reason: NULL pointer to instance. Variable 'PlayerBase' during call 'PlayerBase.GetInventory'
+
+Class:      'CustomMission'
+Function: 'EquipCharacter'
+Stack trace:
+scripts/5_Mission/mission\missionserver.c:519 Function EquipCharacter
+scripts/5_Mission/mission\missionserver.c:580 Function OnClientNewEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:146 Function OnClientNewEvent
+scripts/5_Mission/mission\missionserver.c:319 Function OnEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:10 Function OnEvent
+VPPAdminTools/5_Mission/vppadmintools\missionserver.c:67 Function OnEvent
+scripts/3_Game/dayzgame.c:1760 Function OnEvent
+JM/CF/Scripts/3_Game/communityframework\game\dayzgame.c:120 Function OnEvent
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:45
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:45
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:46
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:46
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:46
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:47
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:47
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:47
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:48
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:48
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:18:48
+Virtual Machine Exception
+
+Reason: NULL pointer to instance
+
+Class:      'TeleportManager'
+Function: 'RemoteTeleportPlayers'
+Stack trace:
+VPPAdminTools/4_World/vppadmintools\plugins\pluginbase\teleportmanager\teleportmanager.c:379 Function RemoteTeleportPlayers
+VPPAdminTools/3_Game/communityframework\rpc\rpcmanager.c:86 Function VOnRPC
+VPPAdminTools/3_Game/communityframework\rpc\dayzgame.c:7 Function OnRPC
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:33:32
+Virtual Machine Exception
+
+Reason: NULL pointer to instance. Variable 'PlayerBase' during call 'PlayerBase.GetInventory'
+
+Class:      'CustomMission'
+Function: 'EquipCharacter'
+Stack trace:
+scripts/5_Mission/mission\missionserver.c:519 Function EquipCharacter
+scripts/5_Mission/mission\missionserver.c:580 Function OnClientNewEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:146 Function OnClientNewEvent
+scripts/5_Mission/mission\missionserver.c:319 Function OnEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:10 Function OnEvent
+VPPAdminTools/5_Mission/vppadmintools\missionserver.c:67 Function OnEvent
+scripts/3_Game/dayzgame.c:1760 Function OnEvent
+JM/CF/Scripts/3_Game/communityframework\game\dayzgame.c:120 Function OnEvent
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+ACERRAFA, 10.10 2026 20:42:26
+Virtual Machine Exception
+
+Reason: NULL pointer to instance. Variable 'PlayerBase' during call 'PlayerBase.GetInventory'
+
+Class:      'CustomMission'
+Function: 'EquipCharacter'
+Stack trace:
+scripts/5_Mission/mission\missionserver.c:519 Function EquipCharacter
+scripts/5_Mission/mission\missionserver.c:580 Function OnClientNewEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:146 Function OnClientNewEvent
+scripts/5_Mission/mission\missionserver.c:319 Function OnEvent
+JM/CF/Scripts/5_Mission/communityframework\mission\missionserver.c:10 Function OnEvent
+VPPAdminTools/5_Mission/vppadmintools\missionserver.c:67 Function OnEvent
+scripts/3_Game/dayzgame.c:1760 Function OnEvent
+JM/CF/Scripts/3_Game/communityframework\game\dayzgame.c:120 Function OnEvent
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
