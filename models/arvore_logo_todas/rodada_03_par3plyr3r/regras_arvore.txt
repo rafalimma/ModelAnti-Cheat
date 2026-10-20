@@ -1,0 +1,16 @@
+|--- duracao_rastreando_oculto_max <= 3.0005
+|   |--- aceleracao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- aceleracao_max >  0.0000
+|   |   |--- class: 0
+|--- duracao_rastreando_oculto_max >  3.0005
+|   |--- distancia_alvo_media <= 309.9429
+|   |   |--- class: 0
+|   |--- distancia_alvo_media >  309.9429
+|   |   |--- vel_posicao_media <= 0.0621
+|   |   |   |--- class: 0
+|   |   |--- vel_posicao_media >  0.0621
+|   |   |   |--- angulo_alvo_min <= 0.2581
+|   |   |   |   |--- class: 0
+|   |   |   |--- angulo_alvo_min >  0.2581
+|   |   |   |   |--- class: 1

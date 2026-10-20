@@ -1,0 +1,19 @@
+|--- taxa_alvo_oculto <= 0.3875
+|   |--- aceleracao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- aceleracao_max >  0.0000
+|   |   |--- class: 0
+|--- taxa_alvo_oculto >  0.3875
+|   |--- distancia_alvo_max <= 339.6410
+|   |   |--- variacao_camera_media <= 0.0003
+|   |   |   |--- class: 0
+|   |   |--- variacao_camera_media >  0.0003
+|   |   |   |--- class: 0
+|   |--- distancia_alvo_max >  339.6410
+|   |   |--- vel_posicao_media <= 0.0621
+|   |   |   |--- class: 0
+|   |   |--- vel_posicao_media >  0.0621
+|   |   |   |--- angulo_alvo_min <= 0.2436
+|   |   |   |   |--- class: 0
+|   |   |   |--- angulo_alvo_min >  0.2436
+|   |   |   |   |--- class: 1

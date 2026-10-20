@@ -1,0 +1,16 @@
+|--- taxa_alvo_oculto <= 0.3875
+|   |--- class: 0
+|--- taxa_alvo_oculto >  0.3875
+|   |--- distancia_alvo_media <= 309.9429
+|   |   |--- vel_posicao_max <= 0.1631
+|   |   |   |--- class: 0
+|   |   |--- vel_posicao_max >  0.1631
+|   |   |   |--- class: 0
+|   |--- distancia_alvo_media >  309.9429
+|   |   |--- vel_posicao_media <= 0.0626
+|   |   |   |--- class: 0
+|   |   |--- vel_posicao_media >  0.0626
+|   |   |   |--- angulo_alvo_min <= 0.2538
+|   |   |   |   |--- class: 0
+|   |   |   |--- angulo_alvo_min >  0.2538
+|   |   |   |   |--- class: 1

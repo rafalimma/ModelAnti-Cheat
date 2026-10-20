@@ -1,0 +1,32 @@
+{
+  "amostras_teste": 184,
+  "normais_teste": 180,
+  "hackers_teste": 4,
+  "accuracy": 0.9728260869565217,
+  "balanced_accuracy": 0.9861111111111112,
+  "precision_hacker": 0.4444444444444444,
+  "recall_hacker": 1.0,
+  "f1_hacker": 0.6153846153846154,
+  "false_positive_rate": 0.027777777777777776,
+  "tn": 175,
+  "fp": 5,
+  "fn": 0,
+  "tp": 4,
+  "matriz_confusao": {
+    "tn": 175,
+    "fp": 5,
+    "fn": 0,
+    "tp": 4
+  },
+  "roc_auc": 0.986111111111111,
+  "rodada": 7,
+  "grupo_teste": "par6plyr2h",
+  "grupos_treino": "par2plyr2h;par3plyr3n;par3plyr3r;par4plyr2h;par5plyr2h;par5plyr2n;par7plyr2n;par8plyr2h;par9plyr2n;partida_2players1hacker",
+  "amostras_treino": 2880,
+  "profundidade_arvore": 4,
+  "folhas_arvore": 6,
+  "porta_esp_ativa": true,
+  "distancia_minima_esp_m": 300.0,
+  "janelas_enviadas_ao_juri": 18,
+  "janelas_fora_criterio_esp": 166
+}

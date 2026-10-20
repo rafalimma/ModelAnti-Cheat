@@ -1,0 +1,16 @@
+|--- taxa_alvo_oculto <= 0.3875
+|   |--- vel_rotacao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- vel_rotacao_max >  0.0000
+|   |   |--- class: 0
+|--- taxa_alvo_oculto >  0.3875
+|   |--- distancia_alvo_media <= 309.9429
+|   |   |--- class: 0
+|   |--- distancia_alvo_media >  309.9429
+|   |   |--- angulo_alvo_min <= 0.2538
+|   |   |   |--- class: 0
+|   |   |--- angulo_alvo_min >  0.2538
+|   |   |   |--- duracao_ads_oculto_300m_max <= 15.0195
+|   |   |   |   |--- class: 1
+|   |   |   |--- duracao_ads_oculto_300m_max >  15.0195
+|   |   |   |   |--- class: 0

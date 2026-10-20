@@ -35,6 +35,13 @@ class CustomMission: MissionServer
     static const float RAIO_BUSCA_ALVO = 1000.0;
     static const float ANGULO_MIRA_DEG = 5.0;
 
+    // TESTE CONTROLADO DE SPEEDHACK
+    // O deslocamento e aplicado uma vez por ciclo de telemetria (~1 segundo).
+    // Com 15 metros por ciclo, o preprocessor deve medir aproximadamente 15 m/s.
+    // Use apenas em servidor local e em terreno aberto.
+    static const string SPEEDHACK_TEST_PLAYER_ID = "aRapBi1cCZPZAGLIDny3dk3hQ8vTmNTLHRl8zxmKgQ0=";
+    static const float SPEEDHACK_TEST_METROS_POR_CICLO = 15.0;
+
     float m_Timer = 0;
     PlayerBase m_DummyTarget = null;
     bool m_DummySpawned = false;
@@ -107,6 +114,26 @@ class CustomMission: MissionServer
             headPos = player.GetBonePositionWS(headBone);
         }
         return headPos;
+    }
+
+    // Simula velocidade anormal com deslocamento server-side. A funcao somente
+    // afeta o ID acima e nao altera a velocidade dos demais jogadores.
+    void AplicarTesteSpeedhack(PlayerBase player, string playerID)
+    {
+        if (!player || playerID != SPEEDHACK_TEST_PLAYER_ID)
+            return;
+
+        vector direcao = player.GetDirection();
+        direcao[1] = 0.0;
+        if (direcao.Length() <= 0.01)
+            return;
+
+        direcao.Normalize();
+        vector novaPosicao = player.GetPosition() + direcao * SPEEDHACK_TEST_METROS_POR_CICLO;
+        novaPosicao[1] = GetGame().SurfaceY(novaPosicao[0], novaPosicao[2]);
+        player.SetPosition(novaPosicao);
+
+        Print("[SPEEDHACK_TEST] jogador=" + playerID + " posicao=" + novaPosicao.ToString());
     }
 
     // Uma única colisão válida já prova o bloqueio. Portanto, uma ou cem paredes
@@ -212,6 +239,10 @@ class CustomMission: MissionServer
                 {
                     string playerID = pBody.GetIdentity().GetId();
 
+                    // PARA ATIVAR: remova as duas barras da linha abaixo.
+                    // PARA DESATIVAR: deixe a chamada comentada como esta.
+                    // AplicarTesteSpeedhack(pBody, playerID);
+
                     vector pos = pBody.GetPosition();
                     vector headPos = ObterPosicaoCabeca(pBody);
 
@@ -266,6 +297,11 @@ class CustomMission: MissionServer
                     int alvoEncontrado = 0;
                     int alvoEhDummy = 0;
                     string blockerType = "no_target";
+                    // Contexto temporal do alvo. O identificador nunca deve ser
+                    // usado como feature da IA; ele serve somente para saber se
+                    // o jogador ja viu ESTE MESMO alvo anteriormente.
+                    string alvoID = "none";
+                    vector alvoPos = "0 0 0";
 
                     ref array<Object> nearObjects = new array<Object>;
                     GetGame().GetObjectsAtPosition(pos, RAIO_BUSCA_ALVO, nearObjects, NULL);
@@ -301,8 +337,20 @@ class CustomMission: MissionServer
                                     menorDistancia = dist;
                                     alvoEncontrado = 1;
                                     alvoEhDummy = 0;
+                                    alvoPos = posOther;
                                     if (pOther == m_DummyTarget)
+                                    {
                                         alvoEhDummy = 1;
+                                        alvoID = "dummy";
+                                    }
+                                    else if (pOther.GetIdentity())
+                                    {
+                                        alvoID = pOther.GetIdentity().GetId();
+                                    }
+                                    else
+                                    {
+                                        alvoID = "playerbase_sem_identidade";
+                                    }
 
                                     string currentBlocker;
                                     if (TemVisaoDireta(pBody, pOther, viewOrigin, currentBlocker))
@@ -329,7 +377,26 @@ class CustomMission: MissionServer
 
                     // Campos 0..17 preservam o schema usado pelo preprocessor atual.
                     // Os diagnósticos novos são anexados a partir do campo 18.
-                    Print("DATA_LOG | " + GetGame().GetTime() + " | " + playerID + " | " + pos[0] + " | " + pos[1] + " | " + pos[2] + " | " + dir[0] + " | " + dir[2] + " | " + isAiming + " | " + weaponName + " | " + temVisao + " | " + menorAngulo + " | " + menorDistancia + " | " + dir[1] + " | " + alvoEncontrado + " | " + alvoEhDummy + " | " + alvoNaMira + " | " + mirandoDummy + " | " + wallhackInstantaneo + " | " + isADS + " | " + cameraValid + " | " + directionSource + " | " + blockerType + " | " + bodyDir[0] + " | " + bodyDir[1] + " | " + bodyDir[2] + " | " + cameraDir[0] + " | " + cameraDir[1] + " | " + cameraDir[2] + " | " + viewOrigin[0] + " | " + viewOrigin[1] + " | " + viewOrigin[2]);
+                    // A partir do campo 31: ID interno do alvo e posicao da cabeca.
+                    // O preprocessor usa esses campos apenas para criar contexto
+                    // de ultima visao; o identificador nao e exportado ao modelo.
+                    // O Enforce Script possui um limite baixo para a complexidade
+                    // de uma unica expressao. Montar o registro em blocos mantem
+                    // exatamente o mesmo schema sem causar "Formula too complex".
+                    string dataLog = "DATA_LOG | " + GetGame().GetTime();
+                    dataLog = dataLog + " | " + playerID + " | " + pos[0] + " | " + pos[1];
+                    dataLog = dataLog + " | " + pos[2] + " | " + dir[0] + " | " + dir[2];
+                    dataLog = dataLog + " | " + isAiming + " | " + weaponName + " | " + temVisao;
+                    dataLog = dataLog + " | " + menorAngulo + " | " + menorDistancia + " | " + dir[1];
+                    dataLog = dataLog + " | " + alvoEncontrado + " | " + alvoEhDummy + " | " + alvoNaMira;
+                    dataLog = dataLog + " | " + mirandoDummy + " | " + wallhackInstantaneo + " | " + isADS;
+                    dataLog = dataLog + " | " + cameraValid + " | " + directionSource + " | " + blockerType;
+                    dataLog = dataLog + " | " + bodyDir[0] + " | " + bodyDir[1] + " | " + bodyDir[2];
+                    dataLog = dataLog + " | " + cameraDir[0] + " | " + cameraDir[1] + " | " + cameraDir[2];
+                    dataLog = dataLog + " | " + viewOrigin[0] + " | " + viewOrigin[1] + " | " + viewOrigin[2];
+                    dataLog = dataLog + " | " + alvoID + " | " + alvoPos[0] + " | " + alvoPos[1];
+                    dataLog = dataLog + " | " + alvoPos[2];
+                    Print(dataLog);
                 }
             }
             m_Timer = 0;

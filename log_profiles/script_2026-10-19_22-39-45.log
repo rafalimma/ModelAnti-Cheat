@@ -1,0 +1,52 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\script_2026-10-19_22-39-45.log started at 2026-10-19 22:39:58 (2026-10-20 01:39:58 UTC)
+
+22:39:58.287 SCRIPT       : Module: GameLib; loaded 18x files; 26x classes; used 40/2097 kB (1%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION"; CRC32: f1504c96
+22:39:58.338 SCRIPT       : Registered 367 temporary action enum(s), UAN==367
+22:39:58.929 SCRIPT    (W): @"scripts/3_Game/human.c,17": Missing script declaration for method 'HumanInputController.DisableCrouchCameraHorizontalRotation'
+22:39:58.936 SCRIPT    (W): @"scripts/3_Game/human.c,241": Method not linked 'HumanInputController.DisableCrouchCameratHorizontalRotation'
+22:39:58.936 SCRIPT    (W): @"scripts/3_Game/human.c,240": Method not linked 'HumanInputController.DisableErectCameratHorizontalRotation'
+22:39:58.937 SCRIPT    (W): @"scripts/3_Game/human.c,17": Missing script declaration for method 'HumanInputController.DisableErectHorizontalRotation'
+22:39:58.937 SCRIPT       : Module: Game; loaded 563x files; 1900x classes; used 5432/33554 kB (16%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION,VPPADMINTOOLS,VPPAT_NOTIFICATIONS"; CRC32: cd65d0f2
+22:39:58.942 SCRIPT       : ... Backlit Effects Enabled
+22:40:01.000 SCRIPT       : VPPNotificationManager()
+22:40:01.000 SCRIPT       : [VPPAT] Internal VPPNotifications module loaded!
+22:40:01.000 SCRIPT       : [DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.
+22:40:02.566 SCRIPT    (W): @"scripts/4_World/entities/building/underground/entrance/land_underground_entrance.c,149": 'UpdatePathgraphDoorByAnimationSourceName' is obsolete: 1.30: Use UpdatePathgraphEntityState
+22:40:02.855 SCRIPT    (W): @"VPPAdminTools/4_World/vppadmintools/classes/actions/actionadminbasebuilder.c,87": 'IsColliding' is obsolete: call IsCollidingEx instead
+22:40:02.855 SCRIPT    (W): @"VPPAdminTools/4_World/vppadmintools/classes/actions/actionadminbasebuilder.c,135": 'DestroyCollisionTrigger' is obsolete: no replacement
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetActions'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.SetRoboRespawn'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.SetName'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetInitialState'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetEvents'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.SetRoboRespawnTime'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetName'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetFromStates'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetToStates'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetRoboRespawn'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetActive'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetRoboRespawnTime'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'BotStateMachineData.GetGuards'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'RoboclientUtils.GetDefaultRoboRespawn'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'RoboclientUtils.ReadStateMachines'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'RoboclientUtils.GetDefaultRoboRespawnTime'
+22:40:03.184 SCRIPT    (W): @"scripts/4_World/classes/areadamage/areadamage.c,270": Missing script declaration for method 'RoboclientUtils.GetStateMachines'
+22:40:03.245 SCRIPT       : Module: World; loaded 2489x files; 6763x classes; used 12390/33554 kB (36%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION,VPPADMINTOOLS,VPPAT_NOTIFICATIONS"; CRC32: ca153f61
+22:40:41.218  SCRIPT       : Module: Mission; loaded 327x files; 763x classes; used 6055/33554 kB (18%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION,ENABLE_CAROUSEL,VPPADMINTOOLS,VPPAT_NOTIFICATIONS"; CRC32: a5a1af0b
+22:40:41.289  SCRIPT    (W): @"$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c,61": Possible variable name conflict 'm_player'
+22:40:41.289  SCRIPT    (E): @"$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c,386": Formula too complex
+22:40:41.289  SCRIPT    (E): @"$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c,386": Compatibility error
+22:40:41.290  SCRIPT    (E): Can't compile mission init script'!
+
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c(386): Formula too complex
+22:41:01.875  SCRIPT       : Creating Mission: mpmissions\dayzOffline.chernarusplus\mission.c
+22:41:01.875  SCRIPT       : [SERVER :: Vanilla++ AdminTools Plugins Registering]
+22:41:02.062  SCRIPT       : string summary = '[VPPContextMenu] registry ready: 40 actions, 0 providers'
+22:41:02.112  SCRIPT       : string summary = '[BuildingSetManager] Journal: 0 set(s) loaded, 0 found by the folder scan, 0 dropped'
+22:41:02.133  SCRIPT       : [MissionServer] OnInit - Server
+22:41:02.781  SCRIPT       : [MissionServer] OnMissionStart - Server
+22:41:02.843  SCRIPT       : string dirtyName = 'TESTINGSERVER'
+22:41:03.020 SCRIPT       : [XMLEditor][Jobs] budget calibrated: 9966.71 ticks per ms
+22:41:05.807  SCRIPT       : [MissionServer] OnMissionFinish - Server
+22:41:05.817  SCRIPT       : ~DayZGame()

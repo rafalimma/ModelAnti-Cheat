@@ -1,0 +1,13 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-10-19_22-16-04.log started at 2026-10-19 22:17:16 (2026-10-20 01:17:16 UTC)
+
+
+
+------------------------------------
+19.10 2026 22:17:16
+Can't compile mission init script'!
+
+$CurrentDir:mpmissions\dayzOffline.chernarusplus\init.c(134): Invalid statement ')'
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

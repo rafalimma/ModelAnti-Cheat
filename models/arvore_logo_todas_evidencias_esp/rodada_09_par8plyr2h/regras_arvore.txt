@@ -1,0 +1,19 @@
+|--- taxa_alvo_oculto <= 0.3875
+|   |--- vel_rotacao_max <= 0.0000
+|   |   |--- class: 0
+|   |--- vel_rotacao_max >  0.0000
+|   |   |--- class: 0
+|--- taxa_alvo_oculto >  0.3875
+|   |--- distancia_alvo_media <= 309.9429
+|   |   |--- angulo_alvo_medio <= 2.3306
+|   |   |   |--- class: 0
+|   |   |--- angulo_alvo_medio >  2.3306
+|   |   |   |--- class: 0
+|   |--- distancia_alvo_media >  309.9429
+|   |   |--- eficiencia_trajeto_media <= 0.3484
+|   |   |   |--- class: 0
+|   |   |--- eficiencia_trajeto_media >  0.3484
+|   |   |   |--- angulo_alvo_min <= 0.2538
+|   |   |   |   |--- class: 0
+|   |   |   |--- angulo_alvo_min >  0.2538
+|   |   |   |   |--- class: 1

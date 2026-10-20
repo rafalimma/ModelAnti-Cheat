@@ -62,8 +62,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
 
 
-# Lista branca: medidas comportamentais genericas. Foram excluidas features que
-# ja embutem a regra de 300 m, contagens de episodios e todas as decisoes finais.
+# Lista branca de telemetria comportamental. Decisoes e pontuacoes produzidas
+# pelo motor de regras continuam proibidas. As medidas de ESP em 300 m podem ser
+# usadas porque a porta deterministica ja fixa esse contexto antes do juri; elas
+# descrevem intensidade, ADS, precisao e repeticao, mas nao carregam o rotulo.
 FEATURES_COMPORTAMENTAIS = [
     # Movimento / speedhack
     "vel_posicao_media",
@@ -89,9 +91,35 @@ FEATURES_COMPORTAMENTAIS = [
     "taxa_alvo_oculto",
     "taxa_mirando_alvo",
     "taxa_mira_oculta",
-    "duracao_rastreando_oculto_max",
     "duracao_mirando_oculto_max",
+    # Evidencias primarias de ESP dentro da faixa aceita pela porta (> 300 m).
+    "taxa_mira_oculta_300m",
+    "duracao_mirando_oculto_300m_max",
+    "taxa_ads_oculta_300m",
+    "duracao_ads_oculto_300m_max",
+    "taxa_precisao_oculta_300m",
+    "duracao_precisao_oculta_300m_max",
+    "contagem_episodios_esp_120s_max",
+    "contagem_episodios_ads_120s_max",
+    # Contexto do mesmo alvo (disponivel nos logs novos do init.c).
+    "taxa_alvo_visto_ultimos_30s",
+    "taxa_alvo_visto_ultimos_60s",
+    "tempo_desde_ultima_visao_alvo_max",
+    "deslocamento_alvo_desde_ultima_visao_max",
+    "taxa_ads_oculto_sem_visao_recente_60s",
+    "taxa_ads_oculto_alvo_moveu_3m",
+    "contagem_trocas_alvo_oculto_ads_120s_max",
 ]
+
+FEATURES_CONTEXTO_ALVO = {
+    "taxa_alvo_visto_ultimos_30s",
+    "taxa_alvo_visto_ultimos_60s",
+    "tempo_desde_ultima_visao_alvo_max",
+    "deslocamento_alvo_desde_ultima_visao_max",
+    "taxa_ads_oculto_sem_visao_recente_60s",
+    "taxa_ads_oculto_alvo_moveu_3m",
+    "contagem_trocas_alvo_oculto_ads_120s_max",
+}
 
 COLUNAS_PROIBIDAS = {
     "jogador_sessao",
@@ -251,10 +279,26 @@ def carregar_intervalos_rotulados(manifesto: pd.DataFrame, base_manifesto: Path)
 
 
 def selecionar_features(dados: pd.DataFrame) -> list[str]:
-    features = [coluna for coluna in FEATURES_COMPORTAMENTAIS if coluna in dados.columns]
-    faltantes = [coluna for coluna in FEATURES_COMPORTAMENTAIS if coluna not in dados.columns]
+    contexto_confiavel = (
+        "contexto_alvo_confiavel" in dados.columns
+        and pd.to_numeric(
+            dados["contexto_alvo_confiavel"], errors="coerce"
+        ).fillna(0).eq(1).all()
+    )
+
+    candidatas = [
+        coluna for coluna in FEATURES_COMPORTAMENTAIS
+        if contexto_confiavel or coluna not in FEATURES_CONTEXTO_ALVO
+    ]
+    features = [coluna for coluna in candidatas if coluna in dados.columns]
+    faltantes = [coluna for coluna in candidatas if coluna not in dados.columns]
     if faltantes:
         print(f"AVISO: features ausentes e ignoradas: {faltantes}")
+    if not contexto_confiavel:
+        print(
+            "AVISO: contexto do mesmo alvo desativado. "
+            "Use somente partidas geradas pelo init.c novo para habilita-lo."
+        )
     if len(features) < 10:
         raise ValueError(
             f"Somente {len(features)} features validas foram encontradas; esperado >= 10."

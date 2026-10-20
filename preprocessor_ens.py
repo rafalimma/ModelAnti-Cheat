@@ -14,6 +14,8 @@ ANGULO_PRECISAO_ESP_DEG = 1.0
 DISTANCIA_ESP_MIN = 300.0
 DURACAO_ESP_SEG = 3.0
 DURACAO_PRECISAO_ESP_SEG = 3.0
+JANELA_VISAO_RECENTE_SEG = 60.0
+DESLOCAMENTO_ALVO_OCULTO_MIN_M = 3.0
 JANELA_REPETICAO_ESP_SEG = 120.0
 MIN_EPISODIOS_ESP_FORTE = 2
 DURACAO_MOVIMENTO_SEG = 4.0
@@ -48,7 +50,11 @@ FEATURES_IA_RECOMENDADAS = [
     'taxa_ads_oculta_300m_10s', 'taxa_precisao_oculta_300m_10s',
     'persistencia_oculta_300m_max_10s', 'persistencia_mira_oculta_300m_max_10s',
     'perseguindo_player', 'duracao_perseguicao_oculta_s',
-    'duracao_speedhack_s'
+    'duracao_speedhack_s', 'alvo_visto_antes',
+    'tempo_desde_ultima_visao_alvo_s', 'alvo_visto_ultimos_30s',
+    'alvo_visto_ultimos_60s', 'deslocamento_alvo_desde_ultima_visao_m',
+    'ads_oculto_sem_visao_recente_60s', 'ads_oculto_alvo_moveu_3m',
+    'contagem_trocas_alvo_oculto_ads_120s'
 ]
 
 FEATURES_JANELA_IA_RECOMENDADAS = [
@@ -66,7 +72,12 @@ FEATURES_JANELA_IA_RECOMENDADAS = [
     'taxa_ads_oculta_300m', 'taxa_precisao_oculta_300m',
     'duracao_ads_oculto_300m_max', 'duracao_precisao_oculta_300m_max',
     'contagem_episodios_esp_120s_max', 'contagem_episodios_ads_120s_max',
-    'duracao_speedhack_max'
+    'duracao_speedhack_max', 'taxa_alvo_visto_ultimos_30s',
+    'taxa_alvo_visto_ultimos_60s', 'tempo_desde_ultima_visao_alvo_max',
+    'deslocamento_alvo_desde_ultima_visao_max',
+    'taxa_ads_oculto_sem_visao_recente_60s',
+    'taxa_ads_oculto_alvo_moveu_3m',
+    'contagem_trocas_alvo_oculto_ads_120s_max'
 ]
 
 # ==========================================
@@ -127,6 +138,10 @@ def preprocess_log(input_path, output_path, dt):
                     angulo_alvo = float(parts[10]) if len(parts) > 10 else 180.0
                     alvo_encontrado = int(parts[13]) if len(parts) > 13 else int(distancia_alvo > 0.0)
                     alvo_na_mira = int(parts[15]) if len(parts) > 15 else int(alvo_encontrado == 1 and angulo_alvo <= ANGULO_MIRA_DEG)
+                    alvo_id = parts[31] if len(parts) > 31 and parts[31] else (
+                        'legacy_target' if alvo_encontrado == 1 else 'none'
+                    )
+                    contexto_alvo_confiavel = int(len(parts) > 34)
                     data.append({
                         'tempo': int(parts[0]),
                         'player_id': parts[1],
@@ -145,7 +160,13 @@ def preprocess_log(input_path, output_path, dt):
                         'alvo_encontrado': alvo_encontrado,
                         # O tipo do alvo é intencionalmente ignorado. Dummy e jogador
                         # real são tratados como o mesmo alvo humano pelo dataset.
-                        'alvo_na_mira': alvo_na_mira
+                        'alvo_na_mira': alvo_na_mira,
+                        # ID e posicao sao contexto interno. O ID nunca e feature.
+                        'alvo_id': alvo_id,
+                        'contexto_alvo_confiavel': contexto_alvo_confiavel,
+                        'alvo_pos_x': float(parts[32]) if len(parts) > 32 and parts[32] else 0.0,
+                        'alvo_pos_y': float(parts[33]) if len(parts) > 33 and parts[33] else 0.0,
+                        'alvo_pos_z': float(parts[34]) if len(parts) > 34 and parts[34] else 0.0
                     })
                 except (IndexError, ValueError):
                     continue
@@ -171,6 +192,55 @@ def preprocess_log(input_path, output_path, dt):
     ) / 1000.0
     df['janela_analise_10s'] = np.floor(df['tempo_run_s'] / JANELA_ANALISE_SEG).astype(int)
     print(f"Sucesso! {len(df)} linhas processadas.")
+
+    # Contexto por observador + alvo. Para logs antigos o alvo recebe a chave
+    # legacy_target; isso preserva compatibilidade, mas a associacao exata entre
+    # alvos so existe nos logs novos gerados pelo init.c atualizado.
+    df['alvo_visto_antes'] = 0
+    df['tempo_desde_ultima_visao_alvo_s'] = JANELA_VISAO_RECENTE_SEG * 10.0
+    df['alvo_visto_ultimos_30s'] = 0
+    df['alvo_visto_ultimos_60s'] = 0
+    df['deslocamento_alvo_desde_ultima_visao_m'] = 0.0
+
+    alvos_validos = df[
+        (df['alvo_encontrado'] == 1) &
+        (df['alvo_id'].astype(str) != 'none')
+    ]
+    for _, indices in alvos_validos.groupby(
+        ['player_id', 'alvo_id'], sort=False
+    ).groups.items():
+        ultimo_tempo_visivel = None
+        ultima_posicao_visivel = None
+        for indice in indices:
+            tempo_atual = float(df.at[indice, 'tempo_run_s'])
+            posicao_atual = np.array([
+                float(df.at[indice, 'alvo_pos_x']),
+                float(df.at[indice, 'alvo_pos_y']),
+                float(df.at[indice, 'alvo_pos_z'])
+            ])
+
+            if ultimo_tempo_visivel is not None:
+                tempo_desde_visao = max(0.0, tempo_atual - ultimo_tempo_visivel)
+                df.at[indice, 'alvo_visto_antes'] = 1
+                df.at[indice, 'tempo_desde_ultima_visao_alvo_s'] = min(
+                    tempo_desde_visao, JANELA_VISAO_RECENTE_SEG * 10.0
+                )
+                df.at[indice, 'alvo_visto_ultimos_30s'] = int(tempo_desde_visao <= 30.0)
+                df.at[indice, 'alvo_visto_ultimos_60s'] = int(
+                    tempo_desde_visao <= JANELA_VISAO_RECENTE_SEG
+                )
+                df.at[indice, 'deslocamento_alvo_desde_ultima_visao_m'] = float(
+                    np.linalg.norm(posicao_atual - ultima_posicao_visivel)
+                )
+
+            if int(df.at[indice, 'tem_visao']) == 1:
+                ultimo_tempo_visivel = tempo_atual
+                ultima_posicao_visivel = posicao_atual
+                df.at[indice, 'alvo_visto_antes'] = 1
+                df.at[indice, 'tempo_desde_ultima_visao_alvo_s'] = 0.0
+                df.at[indice, 'alvo_visto_ultimos_30s'] = 1
+                df.at[indice, 'alvo_visto_ultimos_60s'] = 1
+                df.at[indice, 'deslocamento_alvo_desde_ultima_visao_m'] = 0.0
 
     # --- 1. CÁLCULOS COMPORTAMENTAIS INDIVIDUAIS ---
     df['vel_posicao'] = 0.0
@@ -272,6 +342,15 @@ def preprocess_log(input_path, output_path, dt):
     df['alinhamento_preciso_oculto_300m'] = (
         (df['mirando_alvo_oculto_300m'] == 1) &
         (df['travado_em_player'] <= ANGULO_PRECISAO_ESP_DEG)
+    ).astype(int)
+    df['ads_oculto_sem_visao_recente_60s'] = (
+        (df['mirando_ads_alvo_oculto_300m'] == 1) &
+        (df['alvo_visto_ultimos_60s'] == 0)
+    ).astype(int)
+    df['ads_oculto_alvo_moveu_3m'] = (
+        (df['mirando_ads_alvo_oculto_300m'] == 1) &
+        (df['alvo_visto_antes'] == 1) &
+        (df['deslocamento_alvo_desde_ultima_visao_m'] >= DESLOCAMENTO_ALVO_OCULTO_MIN_M)
     ).astype(int)
 
     def duracao_consecutiva(condicao):
@@ -461,6 +540,20 @@ def preprocess_log(input_path, output_path, dt):
         df['player_id'], sort=False
     ).transform(lambda s: s.rolling(janela_repeticao, min_periods=1).sum()).astype(int)
 
+    alvo_anterior = df.groupby('player_id', sort=False)['alvo_id'].shift(1)
+    ads_oculto_anterior = df.groupby(
+        'player_id', sort=False
+    )['mirando_ads_alvo_oculto_300m'].shift(1).fillna(0).astype(int)
+    troca_alvo_oculto_ads = (
+        (df['mirando_ads_alvo_oculto_300m'] == 1) &
+        (ads_oculto_anterior == 1) &
+        alvo_anterior.notna() &
+        (df['alvo_id'] != alvo_anterior)
+    ).astype(int)
+    df['contagem_trocas_alvo_oculto_ads_120s'] = troca_alvo_oculto_ads.groupby(
+        df['player_id'], sort=False
+    ).transform(lambda s: s.rolling(janela_repeticao, min_periods=1).sum()).astype(int)
+
     df['evidencia_esp_repetido'] = (
         df['contagem_episodios_esp_120s'] >= MIN_EPISODIOS_ESP_FORTE
     ).astype(int)
@@ -556,7 +649,8 @@ def preprocess_log(input_path, output_path, dt):
     # Estas colunas servem para localizar a faixa da run e conferir o equipamento.
     # A arma é apenas metadado de auditoria e não deve ser usada como feature.
     metadados = [
-        'jogador_sessao', 'tempo_run_s', 'janela_analise_10s', 'arma'
+        'jogador_sessao', 'tempo_run_s', 'janela_analise_10s', 'arma',
+        'contexto_alvo_confiavel'
     ]
     colunas_analise = [
         'tracking_oculto_suspeito', 'mira_armada_oculta_suspeita',
@@ -596,6 +690,7 @@ def preprocess_log(input_path, output_path, dt):
         arma_predominante=('arma', arma_predominante),
         armas_observadas=('arma', armas_observadas),
         taxa_arma_empunhada=('_arma_empunhada', 'mean'),
+        contexto_alvo_confiavel=('contexto_alvo_confiavel', 'min'),
         vel_posicao_media=('vel_posicao', 'mean'),
         vel_posicao_max=('vel_posicao', 'max'),
         aceleracao_media=('acel_linear', 'mean'),
@@ -629,6 +724,13 @@ def preprocess_log(input_path, output_path, dt):
         duracao_precisao_oculta_300m_max=('duracao_precisao_oculta_300m_s', 'max'),
         contagem_episodios_esp_120s_max=('contagem_episodios_esp_120s', 'max'),
         contagem_episodios_ads_120s_max=('contagem_episodios_ads_120s', 'max'),
+        taxa_alvo_visto_ultimos_30s=('alvo_visto_ultimos_30s', 'mean'),
+        taxa_alvo_visto_ultimos_60s=('alvo_visto_ultimos_60s', 'mean'),
+        tempo_desde_ultima_visao_alvo_max=('tempo_desde_ultima_visao_alvo_s', 'max'),
+        deslocamento_alvo_desde_ultima_visao_max=('deslocamento_alvo_desde_ultima_visao_m', 'max'),
+        taxa_ads_oculto_sem_visao_recente_60s=('ads_oculto_sem_visao_recente_60s', 'mean'),
+        taxa_ads_oculto_alvo_moveu_3m=('ads_oculto_alvo_moveu_3m', 'mean'),
+        contagem_trocas_alvo_oculto_ads_120s_max=('contagem_trocas_alvo_oculto_ads_120s', 'max'),
         duracao_perseguicao_oculta_max=('duracao_perseguicao_oculta_s', 'max'),
         duracao_speedhack_max=('duracao_speedhack_s', 'max'),
         pontos_evento_total=('pontos_evento', 'sum'),
@@ -654,7 +756,8 @@ def preprocess_log(input_path, output_path, dt):
     metadados_janela = [
         'jogador_sessao', 'janela_analise_10s', 'inicio_janela_s',
         'fim_janela_s', 'amostras', 'arma_predominante',
-        'armas_observadas', 'taxa_arma_empunhada'
+        'armas_observadas', 'taxa_arma_empunhada',
+        'contexto_alvo_confiavel'
     ]
     analise_janela = [
         'pontos_evento_total', 'pontos_suspeita_60s_max',

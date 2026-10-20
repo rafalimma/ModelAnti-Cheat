@@ -1,0 +1,77 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\script_2026-10-17_13-16-54.log started at 2026-10-17 13:17:11 (2026-10-17 16:17:11 UTC)
+
+13:17:11.116 SCRIPT       : Module: GameLib; loaded 18x files; 26x classes; used 40/2097 kB (1%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION"; CRC32: f1504c96
+13:17:11.215 SCRIPT       : Registered 358 temporary action enum(s), UAN==358
+13:17:11.718 SCRIPT    (W): @"scripts/3_Game/human.c,17": Missing script declaration for method 'HumanInputController.DisableCrouchCameraHorizontalRotation'
+13:17:11.718 SCRIPT    (W): @"scripts/3_Game/human.c,241": Method not linked 'HumanInputController.DisableCrouchCameratHorizontalRotation'
+13:17:11.718 SCRIPT    (W): @"scripts/3_Game/human.c,240": Method not linked 'HumanInputController.DisableErectCameratHorizontalRotation'
+13:17:11.723 SCRIPT    (W): @"scripts/3_Game/human.c,17": Missing script declaration for method 'HumanInputController.DisableErectHorizontalRotation'
+13:17:11.723 SCRIPT       : Module: Game; loaded 545x files; 1710x classes; used 4693/33554 kB (13%) of static memory; defines: "DAYZ_1_30,SERVER_FOR_WINDOWS,SERVER,PLATFORM_WINDOWS,RELEASE,NO_GUI,NO_GUI_INGAME,sakhal,nasdara,JM_CommunityFramework,CF_MODULE_CONFIG,CF_EXPRESSION,CF_TRACE_STACK_NAME_ASSUMPTION_FIX,CF_GHOSTICONS,CF_MODSTORAGE,CF_SURFACES,CF_MODULES,CF_REF_FIX,CF_BUGFIX_REF,CF_BUGFIX_XML,CF_VIRTUALSTORAGE_FIX,CF_DOUBLYLINKEDNODES,CF_ONUPDATE_RATE_LIMIT,CF_LOG_TIMESTAMP,AVPPAdminTools,DayZ,FEATURE_CURSOR,FEATURE_NETWORK_RECONCILIATION,FEATURE_NETWORK_RECONCILATION,VPPADMINTOOLS,VPPAT_NOTIFICATIONS"; CRC32: 7051ad08
+13:17:11.727 SCRIPT       : ... Backlit Effects Enabled
+13:17:13.000 SCRIPT       : VPPNotificationManager()
+13:17:13.000 SCRIPT       : [VPPAT] Internal VPPNotifications module loaded!
+13:17:13.000 SCRIPT       : [DayZ Game]:: DayZGame(): Initializing V++ Admin Tools.
+13:17:14.650 SCRIPT    (W): @"scripts/4_World/entities/building/underground/entrance/land_underground_entrance.c,149": 'UpdatePathgraphDoorByAnimationSourceName' is obsolete: 1.30: Use UpdatePathgraphEntityState
+13:17:14.724 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/misc/basebuildinghelperfuncs.c,60": Undefined function 'CombinationLock.UnlockServer'
+13:17:14.727 SCRIPT    (E): @"scripts/4_World/classes/useractionscomponent/actiontargets.c,253": Bad type 'map'
+13:17:14.731 SCRIPT    (E): @"scripts/4_World/classes/contextmenu.c,161": Bad type 'Param3'
+13:17:14.758 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/servermanager/classes/bansmanager.c,64": Bad type 'JsonFileLoader'
+13:17:14.759 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/servermanager/classes/bansmanager.c,87": Bad type 'Param1'
+13:17:14.759 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/servermanager/classes/bansmanager.c,87": Can't find class Param1
+13:17:14.760 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/servermanager/classes/bansmanager.c,120": Bad type 'Param2'
+13:17:14.783 SCRIPT    (E): @"scripts/4_World/classes/contaminatedarea/contaminatedarea_dynamic.c,76": Bad type 'Param3'
+13:17:14.819 SCRIPT    (E): @"scripts/4_World/classes/bleedingsources/bleedingsource.c,157": Bad type 'Param4'
+13:17:14.827 SCRIPT    (E): @"scripts/4_World/classes/playergearspawn/cfgplayerspawnhandler.c,20": Bad type 'JsonFileLoader'
+13:17:14.835 SCRIPT    (E): @"scripts/4_World/classes/craftingmanager.c,146": Bad type 'Param3'
+13:17:14.835 SCRIPT    (E): @"scripts/4_World/classes/craftingmanager.c,146": Can't find class Param3
+13:17:14.857 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/logmanager/logmanager.c,48": Bad type 'JsonFileLoader'
+13:17:14.861 SCRIPT    (E): @"scripts/4_World/plugins/pluginbase/plugindeveloper/developerteleport.c,147": Bad type 'Param4'
+13:17:14.867 SCRIPT    (E): @"scripts/4_World/classes/useractionscomponent/actionmanagerclient.c,188": Bad type 'map'
+13:17:14.873 SCRIPT    (E): @"JM/CF/Scripts/4_World/communityframework/entities/helicopterscript.c,3": Bad type 'CF_ModStorageObject'
+13:17:14.873 SCRIPT    (E): @"JM/CF/Scripts/4_World/communityframework/entities/helicopterscript.c,3": Can't find class CF_ModStorageObject
+13:17:14.891 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,34": Bad type 'JsonFileLoader'
+13:17:14.894 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,306": Bad type 'array'
+13:17:14.895 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,314": Bad type 'Param1'
+13:17:14.895 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,314": Can't find class Param1
+13:17:14.895 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,329": Bad type 'Param1'
+13:17:14.895 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,329": Can't find class Param1
+13:17:14.896 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,337": Bad type 'Param3'
+13:17:14.897 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,431": Bad type 'Param2'
+13:17:14.898 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/teleportmanager/teleportmanager.c,451": Bad type 'Param4'
+13:17:14.918 SCRIPT    (E): @"scripts/4_World/classes/quickbarbase.c,183": Bad type 'Param2'
+13:17:14.919 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/permissionmanager/permissionloader.c,22": Bad type 'JsonFileLoader'
+13:17:14.927 SCRIPT    (E): @"scripts/4_World/classes/contaminatedarea/contaminatedarealoader.c,113": Bad type 'JsonFileLoader'
+13:17:14.932 SCRIPT    (E): @"scripts/4_World/plugins/pluginbase/pluginscenemanager.c,1205": Bad type 'Param2'
+13:17:14.933 SCRIPT    (E): @"scripts/4_World/plugins/pluginbase/pluginscenemanager.c,1205": Can't find class Param2
+13:17:14.933 SCRIPT    (E): @"scripts/4_World/plugins/pluginbase/pluginscenemanager.c,1213": Bad type 'Param2'
+13:17:14.933 SCRIPT    (E): @"scripts/4_World/plugins/pluginbase/pluginscenemanager.c,1213": Can't find class Param2
+13:17:14.954 SCRIPT    (E): @"scripts/4_World/classes/bleedingsources/bleedingsourcesmanagerremote.c,17": Bad type 'Param3'
+13:17:14.975 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/steamapimanager/steamapimanager.c,30": Bad type 'JsonFileLoader'
+13:17:14.976 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/steamapimanager/steamapimanager.c,108": Bad type 'JsonFileLoader'
+13:17:14.979 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/esptools/vppesptools.c,17": Bad type 'Param2'
+13:17:14.980 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/esptools/vppesptools.c,54": Bad type 'Param1'
+13:17:14.981 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/esptools/vppesptools.c,126": Bad type 'Param2'
+13:17:14.981 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/esptools/vppesptools.c,126": Can't find class Param2
+13:17:14.984 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,55": Bad type 'Param2'
+13:17:14.984 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,83": Bad type 'Param2'
+13:17:14.986 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,171": Bad type 'Param2'
+13:17:14.987 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,248": Bad type 'Param3'
+13:17:14.989 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,524": Bad type 'Param4'
+13:17:14.989 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,524": Can't find class Param4
+13:17:14.989 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,536": Bad type 'Param3'
+13:17:14.990 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,614": Bad type 'Param3'
+13:17:14.992 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,703": Bad type 'Param1'
+13:17:14.992 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,703": Can't find class Param1
+13:17:14.992 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/playermanager/playermanager.c,713": Bad type 'Param1'
+13:17:15.025 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/weathermanager/timemanager.c,31": Bad type 'JsonFileLoader'
+13:17:15.026 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/weathermanager/timemanager.c,66": Bad type 'Param5'
+13:17:15.043 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/spectatemanager/spectatemanager.c,33": Bad type 'JsonFileLoader'
+13:17:15.044 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/spectatemanager/spectatemanager.c,256": Bad type 'Param2'
+13:17:15.044 SCRIPT    (E): @"VPPAdminTools/4_World/vppadmintools/plugins/pluginbase/spectatemanager/spectatemanager.c,256": Can't find class Param2
+13:17:15.046 SCRIPT    (W): @"VPPAdminTools/4_World/vppadmintools/classes/actions/actionadminbasebuilder.c,87": 'IsColliding' is obsolete: call IsCollidingEx instead
+13:17:15.046 SCRIPT    (W): @"VPPAdminTools/4_World/vppadmintools/classes/actions/actionadminbasebuilder.c,135": 'DestroyCollisionTrigger' is obsolete: no replacement
+13:17:15.052 SCRIPT    (E): Can't compile "World" script module!
+
+VPPAdminTools/4_World/vppadmintools/misc/basebuildinghelperfuncs.c(60): Undefined function 'CombinationLock.UnlockServer'
+13:17:32.617 SCRIPT    (E): Failed to load entities script!

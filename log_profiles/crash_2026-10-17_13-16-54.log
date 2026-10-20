@@ -1,0 +1,47 @@
+---------------------------------------------
+Log D:\ModelAnti-Cheat\log_profiles\crash_2026-10-17_13-16-54.log started at 2026-10-17 13:17:15 (2026-10-17 16:17:15 UTC)
+
+
+
+------------------------------------
+17.10 2026 13:17:15
+Can't compile "World" script module!
+
+VPPAdminTools/4_World/vppadmintools/misc/basebuildinghelperfuncs.c(60): Undefined function 'CombinationLock.UnlockServer'
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  
+
+
+------------------------------------
+17.10 2026 13:17:32
+Unhandled exception
+
+Program: D:\steam\steamapps\common\DayZServer\DayZServer_x64.exe
+Reason: Access violation. Illegal read by 0x7ff6a1cf565f at 0x0
+
+SymGetSymFromAddr:487, addr:0x7ff6a1cf565f
+SymGetSymFromAddr:487, addr:0x7ff6a2006e2f
+SymGetSymFromAddr:487, addr:0x7ff6a200d01f
+SymGetSymFromAddr:487, addr:0x7ff6a200e720
+SymGetSymFromAddr:487, addr:0x7ff6a200e81d
+[CDPInitServer]: ??? addr:0x7ff6a2431667
+[CDPInitServer]: ??? addr:0x7ff6a2439b3b
+SymGetSymFromAddr:487, addr:0x7ff6a20033e5
+SymGetSymFromAddr:487, addr:0x7ff6a200d1c5
+SymGetSymFromAddr:487, addr:0x7ff6a200e720
+SymGetSymFromAddr:487, addr:0x7ff6a200e81d
+SymGetSymFromAddr:487, addr:0x7ff6a200f4c5
+[CDPInitServer]: ??? addr:0x7ff6a2460a40
+[CDPInitServer]: ??? addr:0x7ff6a245f3df
+SymGetSymFromAddr:487, addr:0x7ff6a20b71e9
+SymGetSymFromAddr:487, addr:0x7ff6a1c0d5a0
+[CDPInitServer]: ??? addr:0x7ff6a2abb31a
+[BaseThreadInitThunk]: ??? addr:0x7fff3dcfdda7
+[RtlUserThreadStart]: ??? addr:0x7fff3f3dee4c
+[RtlUserThreadStart]: ??? addr:0x7fff3f3dee4c
+
+
+
+Runtime mode
+CLI params: config serverDZ.cfg port 2302 profiles D:\ModelAnti-Cheat\log_profiles mod @CF;@VPPAdminTools cpuCount 4 dologs  adminlog  netlog  freezecheck  nosplash  noPause  filePatching  

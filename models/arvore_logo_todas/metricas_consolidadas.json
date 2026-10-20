@@ -1,0 +1,114 @@
+{
+  "metodo": "Leave-One-Group-Out",
+  "grupo_validacao": "partida_id",
+  "grupos": [
+    "par2plyr2h",
+    "par3plyr3n",
+    "par3plyr3r",
+    "par4plyr2h",
+    "par5plyr2h",
+    "par5plyr2n",
+    "par6plyr2h",
+    "par7plyr2n",
+    "par8plyr2h",
+    "par9plyr2n",
+    "partida_2players1hacker"
+  ],
+  "rodadas": 11,
+  "amostras_total": 3064,
+  "features": [
+    "vel_posicao_media",
+    "vel_posicao_max",
+    "aceleracao_media",
+    "aceleracao_max",
+    "vel_rotacao_media",
+    "vel_rotacao_max",
+    "vel_rotacao_std",
+    "jitter_medio",
+    "entropia_media",
+    "eficiencia_trajeto_media",
+    "variacao_camera_media",
+    "angulo_alvo_medio",
+    "angulo_alvo_min",
+    "distancia_alvo_media",
+    "distancia_alvo_max",
+    "taxa_alvo_encontrado",
+    "taxa_alvo_na_mira",
+    "taxa_visao_direta",
+    "taxa_alvo_oculto",
+    "taxa_mirando_alvo",
+    "taxa_mira_oculta",
+    "duracao_rastreando_oculto_max",
+    "duracao_mirando_oculto_max"
+  ],
+  "arma_usada_como_feature": false,
+  "porta_esp": {
+    "ativa": true,
+    "ordem": "antes_do_juri_IA",
+    "exige_alvo_oculto": true,
+    "distancia_minima_exclusiva_m": 300.0,
+    "condicao": "taxa_alvo_oculto > 0 e distancia_alvo_media > 300",
+    "janelas_enviadas_ao_juri": 228,
+    "janelas_fora_criterio_esp": 2836
+  },
+  "metricas_fora_da_amostra_acumuladas": {
+    "amostras_teste": 3064,
+    "normais_teste": 3035,
+    "hackers_teste": 29,
+    "accuracy": 0.9817232375979112,
+    "balanced_accuracy": 0.9395443958416179,
+    "precision_hacker": 0.3291139240506329,
+    "recall_hacker": 0.896551724137931,
+    "f1_hacker": 0.48148148148148145,
+    "false_positive_rate": 0.017462932454695223,
+    "tn": 2982,
+    "fp": 53,
+    "fn": 3,
+    "tp": 26,
+    "matriz_confusao": {
+      "tn": 2982,
+      "fp": 53,
+      "fn": 3,
+      "tp": 26
+    },
+    "roc_auc": 0.9358063966369369
+  },
+  "media_e_desvio_entre_rodadas": {
+    "accuracy": {
+      "media": 0.975944947963232,
+      "desvio_padrao": 0.03263642841788835,
+      "rodadas_validas": 11
+    },
+    "balanced_accuracy": {
+      "media": 0.8872607672405143,
+      "desvio_padrao": 0.16829050431953266,
+      "rodadas_validas": 7
+    },
+    "precision_hacker": {
+      "media": 0.42510423709713774,
+      "desvio_padrao": 0.37700977852724404,
+      "rodadas_validas": 8
+    },
+    "recall_hacker": {
+      "media": 0.8035714285714286,
+      "desvio_padrao": 0.339755314115008,
+      "rodadas_validas": 7
+    },
+    "f1_hacker": {
+      "media": 0.6531569879395965,
+      "desvio_padrao": 0.27075174561092574,
+      "rodadas_validas": 6
+    },
+    "false_positive_rate": {
+      "media": 0.02218840558071421,
+      "desvio_padrao": 0.03330633688917706,
+      "rodadas_validas": 11
+    },
+    "roc_auc": {
+      "media": 0.8872607672405143,
+      "desvio_padrao": 0.16829050431953263,
+      "rodadas_validas": 7
+    }
+  },
+  "observacao": "Metricas ausentes em uma rodada significam que a partida de teste nao possuia a classe necessaria para calcula-las."
+}
