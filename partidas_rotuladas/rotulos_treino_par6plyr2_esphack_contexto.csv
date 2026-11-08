@@ -1,0 +1,11 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,1,0.000,1207.000,normal,jogador_par6_contexto_1
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,0.000,179.999,normal,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,190.000,219.999,esp,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,230.000,289.999,normal,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,300.000,319.999,esp,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,330.000,539.999,normal,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,550.000,609.999,esp,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,620.000,769.999,normal,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,780.000,839.999,esp,jogador_par6_contexto_2
+../datasets/par6plyr2-espkack_contexto_hacker_janelas.csv,par6plyr2_esphack_contexto,2,850.000,1270.724,normal,jogador_par6_contexto_2

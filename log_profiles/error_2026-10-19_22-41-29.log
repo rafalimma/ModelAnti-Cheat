@@ -866,3 +866,6 @@ scripts/3_Game/dayzgame.c:1779 Function OnEvent
 JM/CF/Scripts/3_Game/communityframework/game/dayzgame.c:120 Function OnEvent
 22:54:42.949 ENTITY    (W): Unknown object class 'pond' (dz\water\ponds\pond_big_40_04.p3d)
 22:54:42.949 ENTITY    (W): Unknown object class 'pond' (dz\water\ponds\pond_big_40_02.p3d)
+23:00:47.668 RESOURCES (E): ==== Resource leaks ====
+23:00:47.669 DEFAULT   (E): Leaked @"dz/anims/workspaces/player/player_main/player_main.asi"   2
+23:01:08.693 RESOURCES (E): system/system.edds   1

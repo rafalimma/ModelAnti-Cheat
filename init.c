@@ -239,9 +239,8 @@ class CustomMission: MissionServer
                 {
                     string playerID = pBody.GetIdentity().GetId();
 
-                    // PARA ATIVAR: remova as duas barras da linha abaixo.
-                    // PARA DESATIVAR: deixe a chamada comentada como esta.
-                    // AplicarTesteSpeedhack(pBody, playerID);
+                    // TESTE ATIVO. Para desativar, comente novamente esta chamada.
+                    AplicarTesteSpeedhack(pBody, playerID);
 
                     vector pos = pBody.GetPosition();
                     vector headPos = ObterPosicaoCabeca(pBody);

@@ -6,8 +6,9 @@ import argparse
 # ==========================================
 # CONFIGURAÇÃO
 # ==========================================
-FILE_IN = r'log_profiles/script_2026-10-10_20-00-09.log'
-FILE_OUT = 'datasets/par9plyr2n.csv'
+
+FILE_IN = r'log_profiles/script_2026-11-04_23-21-49.log'
+FILE_OUT = 'datasets/par1plyr2-espkack_contexto_normal.csv'
 INTERVALO_TEMPO = 1.0 
 ANGULO_MIRA_DEG = 5.0
 ANGULO_PRECISAO_ESP_DEG = 1.0
@@ -125,6 +126,13 @@ def preprocess_log(input_path, output_path, dt):
         for line in f:
             if "DATA_LOG" in line:
                 content = line.split("DATA_LOG", 1)[1]
+                # Em algumas versoes do DayZ, Print(string) aparece no script.log
+                # como: string dataLog = 'DATA_LOG | ... | valor'. Remova apenas
+                # a aspa de fechamento adicionada pelo logger; logs antigos, que
+                # terminam diretamente no ultimo valor, continuam inalterados.
+                content = content.strip()
+                if content.endswith("'"):
+                    content = content[:-1]
                 # Não remova campos vazios: blockerType pode vir vazio e deslocaria
                 # todos os diagnósticos posteriores do schema.
                 parts = [p.strip() for p in content.split('|')]

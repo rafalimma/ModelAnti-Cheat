@@ -1,0 +1,90 @@
+{
+  "accuracy": 0.9589905362776026,
+  "balanced_accuracy": 0.8645247402040233,
+  "precision_hacker": 0.37142857142857144,
+  "recall_hacker": 0.7647058823529411,
+  "f1_hacker": 0.5,
+  "false_positive_rate": 0.03565640194489465,
+  "matriz_confusao": {
+    "tn": 595,
+    "fp": 22,
+    "fn": 4,
+    "tp": 13
+  },
+  "roc_auc": 0.9484221565449519,
+  "average_precision": 0.45645657087167396,
+  "threshold": 0.5,
+  "grupo_validacao": "partida_id",
+  "grupos_treino": [
+    "par1plyr2_normal_contexto",
+    "par2plyr3_esphack_contexto",
+    "par4plyr2_normal_contexto",
+    "par5plyr2_normal_contexto"
+  ],
+  "grupos_teste": [
+    "par3plyr2_normal_contexto",
+    "par6plyr2_esphack_contexto"
+  ],
+  "amostras_total": 2554,
+  "amostras_treino": 1920,
+  "amostras_teste": 634,
+  "normais_teste": 617,
+  "hackers_teste": 17,
+  "janelas_enviadas_juri": 95,
+  "features": [
+    "vel_posicao_media",
+    "vel_posicao_max",
+    "aceleracao_media",
+    "aceleracao_max",
+    "vel_rotacao_media",
+    "vel_rotacao_max",
+    "vel_rotacao_std",
+    "jitter_medio",
+    "entropia_media",
+    "eficiencia_trajeto_media",
+    "variacao_camera_media",
+    "angulo_alvo_medio",
+    "angulo_alvo_min",
+    "distancia_alvo_media",
+    "distancia_alvo_max",
+    "taxa_alvo_encontrado",
+    "taxa_alvo_na_mira",
+    "taxa_visao_direta",
+    "taxa_alvo_oculto",
+    "taxa_mirando_alvo",
+    "taxa_mira_oculta",
+    "duracao_mirando_oculto_max",
+    "taxa_mira_oculta_300m",
+    "duracao_mirando_oculto_300m_max",
+    "taxa_ads_oculta_300m",
+    "duracao_ads_oculto_300m_max",
+    "taxa_precisao_oculta_300m",
+    "duracao_precisao_oculta_300m_max",
+    "contagem_episodios_esp_120s_max",
+    "contagem_episodios_ads_120s_max"
+  ],
+  "modo_features": "comum",
+  "manifestos": [
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par1plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par2plyr3_esphack_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par3plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par4plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par5plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par6plyr2_esphack_contexto.csv"
+  ],
+  "duplicatas_permitidas": [],
+  "hiperparametros": {
+    "n_estimators": 500,
+    "max_depth": 8,
+    "min_samples_leaf": 5,
+    "max_features": "sqrt",
+    "class_weight": "balanced_subsample"
+  },
+  "porta_esp": {
+    "alvo_oculto_obrigatorio": true,
+    "distancia_operador": ">",
+    "distancia_minima_m": 300.0
+  },
+  "oob_score_holdout": 0.99375,
+  "oob_score_modelo_final": 0.9890368050117463
+}

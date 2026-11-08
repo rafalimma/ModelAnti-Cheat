@@ -5,3 +5,22 @@ DataCache
 BattlEye
 *ADM
 *RPT
+# Arquivos temporários
+.codex_tmp/
+__pycache__/
+*.py[cod]
+node_modules/
+
+# Resultados e logs gerados
+log_profiles/
+
+# Backups locais de mods
+backups/
+
+# Arquivos temporários Python
+__pycache__/
+*.py[cod]
+
+# Temporários do Codex
+.codex_tmp/
+node_modules/

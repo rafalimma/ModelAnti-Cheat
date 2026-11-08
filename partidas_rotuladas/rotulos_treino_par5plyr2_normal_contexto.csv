@@ -1,0 +1,3 @@
+arquivo_csv,partida_id,jogador_sessao,inicio_s,fim_s,rotulo_real,jogador_global
+../datasets/par5plyr2-espkack_contexto_normal_janelas.csv,par5plyr2_normal_contexto,1,0.000,1958.141,normal,jogador_par5_contexto_1
+../datasets/par5plyr2-espkack_contexto_normal_janelas.csv,par5plyr2_normal_contexto,2,0.000,3251.077,normal,jogador_par5_contexto_2
