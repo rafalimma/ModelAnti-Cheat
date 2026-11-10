@@ -1,0 +1,7 @@
+rodada,grupo_teste,janelas_teste,normais_teste,hackers_teste,janelas_enviadas_juri,tn,fp,fn,tp,precision_hacker,recall_hacker,f1_hacker,false_positive_rate,roc_auc,average_precision
+1,par1plyr2_normal_contexto,360,360,0,10,359,1,0,0,0.0,0.0,0.0,0.002777777777777778,,
+2,par2plyr3_esphack_contexto,774,748,26,52,738,10,2,24,0.7058823529411765,0.9230769230769231,0.8,0.013368983957219251,0.9776069518716578,0.9065861385869228
+3,par3plyr2_normal_contexto,393,393,0,1,393,0,0,0,0.0,0.0,0.0,0.0,,
+4,par4plyr2_normal_contexto,267,267,0,8,267,0,0,0,0.0,0.0,0.0,0.0,,
+5,par5plyr2_normal_contexto,519,519,0,37,503,16,0,0,0.0,0.0,0.0,0.030828516377649325,,
+6,par6plyr2_esphack_contexto,241,224,17,94,195,29,1,16,0.35555555555555557,0.9411764705882353,0.5161290322580645,0.12946428571428573,0.8944327731092436,0.31769449133659955

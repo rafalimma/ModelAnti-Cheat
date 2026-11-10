@@ -1,0 +1,48 @@
+{
+  "metodo": "Leave-One-Group-Out",
+  "algoritmo": "LogisticRegression",
+  "grupo": "partida_id",
+  "modo_features": "contexto",
+  "manifestos": [
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par1plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par2plyr3_esphack_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par3plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par4plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par5plyr2_normal_contexto.csv",
+    "D:\\ModelAnti-Cheat\\partidas_rotuladas\\rotulos_treino_par6plyr2_esphack_contexto.csv"
+  ],
+  "rodadas": 6,
+  "janelas_total": 2554,
+  "janelas_enviadas_juri": 202,
+  "partidas_com_falso_positivo": 4,
+  "partidas_com_hacker": 2,
+  "partidas_hacker_detectadas": 2,
+  "metricas_acumuladas": {
+    "accuracy": 0.9796397807361003,
+    "balanced_accuracy": 0.8753577283209691,
+    "precision_hacker": 0.44,
+    "recall_hacker": 0.7674418604651163,
+    "f1_hacker": 0.559322033898305,
+    "false_positive_rate": 0.016726403823178016,
+    "matriz_confusao": {
+      "tn": 2469,
+      "fp": 42,
+      "fn": 10,
+      "tp": 33
+    },
+    "roc_auc": 0.9635927500393616,
+    "average_precision": 0.4360751140076471
+  },
+  "hiperparametros": {
+    "penalty": "l2",
+    "C": 1.0,
+    "solver": "liblinear",
+    "class_weight": "balanced",
+    "threshold": 0.5
+  },
+  "porta_esp": {
+    "alvo_oculto_obrigatorio": true,
+    "distancia_operador": ">",
+    "distancia_minima_m": 300.0
+  }
+}
